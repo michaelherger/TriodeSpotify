@@ -8,8 +8,6 @@ use Slim::Utils::Log;
 use Slim::Utils::Prefs;
 use Slim::Utils::Strings qw(string);
 
-use Plugins::Spotify::Image;
-
 my $prefs = preferences('plugin.spotify');
 my $log;
 
@@ -98,7 +96,7 @@ sub trackInfoURL {
 	my ( $class, $client, $url ) = @_;
 
 	# divert to other handler
-	if ($otherHandler && $prefs->get('othermeta')) {
+	if ($otherHandler) {
 		return $class->SUPER::trackInfoURL($client, $url);
 	}
 

@@ -18,7 +18,6 @@ use Slim::Utils::Strings qw(string cstring);
 
 use Plugins::Spotify::Settings;
 use Plugins::Spotify::Spotifyd;
-use Plugins::Spotify::Image;
 
 my $log = Slim::Utils::Log->addLogCategory({
 	'category'     => 'plugin.spotify',
@@ -51,12 +50,14 @@ sub initPlugin {
 	Plugins::Spotify::Spotifyd->startD;
 
 	Slim::Web::Pages->addPageFunction("^spotifyd.log", \&Plugins::Spotify::Spotifyd::logHandler);
-
-	Plugins::Spotify::Image->init();
 }
 
 sub postinitPlugin {
 	require Plugins::Spotify::ProtocolHandler;
+
+	if ( !Slim::Player::ProtocolHandlers->handlerForProtocol('spotify') ) {
+		$log->error("The official Logitech Squeezebox Spotify plugin should be enabled, or some functionality might be limited.");
+	}
 }
 
 sub shutdownPlugin {
