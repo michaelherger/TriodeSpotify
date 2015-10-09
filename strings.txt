@@ -1,0 +1,623 @@
+PLUGIN_SPOTIFY
+	EN	Spotify
+
+PLUGIN_SPOTIFY_DESC
+	DE	Spotify Plugin eines Drittanbieters. Höre Spotify Musik auf deiner Squeezebox Classic, Boom, Duet, Transporter, Radio oder Touche. Benötigt einen Spotify Premium Account.
+	EN	Third party Spotify plugin.  Listen to Spotify on your Squeezebox Classic, Boom, Duet, Transporter, Radio or Touch.  Requires a Spotify Premium account.
+
+PLUGIN_SPOTIFY_BANNER
+	DE	Spotify Hinweis
+	EN	Spotify Notice
+
+PLUGIN_SPOTIFY_BANNER_TEXT
+	DE	Diese Erweiterung verwendet SPOTIFY CORE, ist aber von Spotify weder unterstützt noch zertifiziert oder anderweitig gutgeheissen. Spotify ist eine eingetragene Marke der Spotify Group.
+	EN	This plugin uses SPOTIFY CORE but is not endorsed, certified or otherwise approved in any way by Spotify. Spotify is the registered trade mark of the Spotify Group.
+
+PLUGIN_SPOTIFY_EULA
+	DE	Spotify Lizenz
+	EN	Spotify Agreement	
+
+PLUGIN_SPOTIFY_EULA_TEXT1
+	DE	Spotify fordert, dass du ihre Lizenzbedingungen akzeptierst, um Anwendungen basierend auf ihrem API zu verwenden.
+	EN	Spotify require that you agree an end user license agreement for use of applications based on their API.
+
+PLUGIN_SPOTIFY_EULA_TEXT2
+	DE	Bitte lese Abschnitt 3.10 der <a href="http://developer.spotify.com/en/libspotify/terms-of-use/">Spotify Nutzungsbedingungen</a> und bestätige, dass du damit einverstanden bist.
+	EN	Please read section 3.10 of the Spotify terms of use <a href="http://developer.spotify.com/en/libspotify/terms-of-use/">here</a> and indicate that you agree with their terms of use.
+
+PLUGIN_SPOTIFY_EULA_TEXT3
+	DE	I akzeptiere
+	EN	I agree
+
+PLUGIN_SPOTIFY_EULA_TEXT4
+	DE	Hinweis zur Vertraulichkeit: dieses Plugin speichert deinen Spotify Benutzernamen und Passwort, aber keinerlei weiteren informationen, die durch Spotify verfügbar wären.
+	EN	Privacy information: this plugin will store your Spotify username and password, but no other personal information available from Spotify.
+
+PLUGIN_SPOTIFY_EULA
+	DE	Bedingungen akzeptieren
+	EN	Agree Terms
+
+SPOTIFY
+	EN	Spotify
+
+PLUGIN_SPOTIFY_STATUS
+	EN	Status
+
+PLUGIN_SPOTIFY_HELPER
+	DE	Helfer-Anwendung
+	EN	Helper App
+
+PLUGIN_SPOTIFY_RUNNING
+	DE	Läuft
+	EN	Running
+
+PLUGIN_SPOTIFY_NOTRUNNING
+	DE	Läuft nicht
+	EN	Not Running
+
+PLUGIN_SPOTIFY_LOGGEDIN
+	DE	Aktuell bei Spotify eingeloggt
+	EN	Current logged in to Spotify
+
+PLUGIN_SPOTIFY_NOTLOGGEDIN
+	DE	Nicht bei Spotify eingeloggt
+	EN	Not logged in to Spotify
+
+PLUGIN_SPOTIFY_LOGINERR
+	DE	Login Fehler
+	EN	Login Error
+
+PLUGIN_SPOTIFY_LASTERR
+	DE	Letzter Fehler
+	EN	Last Error
+
+PLUGIN_SPOTIFY_STATS
+	DE	Statistik
+	EN	Statistics
+
+PLUGIN_SPOTIFY_STREAM
+	DE	Gespielte Tracks
+	EN	Tracks Played
+
+PLUGIN_SPOTIFY_PREFETCH
+	DE	Geladene Tracks
+	EN	Tracks Prefetched
+
+PLUGIN_SPOTIFY_RELOGIN
+	EN	Re-logins
+
+PLUGIN_SPOTIFY_COVER
+	DE	Plattencover
+	EN	Coverart
+
+PLUGIN_SPOTIFY_SEARCH
+	DE	Suchen
+	EN	Searches
+
+PLUGIN_SPOTIFY_TOPLIST
+	DE	Top 100 Suchen
+	EN	Top 100 Searches
+
+PLUGIN_SPOTIFY_PLAYLIST
+	DE	Wiedergabelisten durchsuchen
+	EN	Browse Playlists
+
+PLUGIN_SPOTIFY_BROWSEARTIST
+	DE	Interpreten durchsuchen
+	EN	Browse Artists
+
+PLUGIN_SPOTIFY_BROWSEALBUM
+	DE	Alben durchsuchen
+	EN	Browse Albums
+
+PLUGIN_SPOTIFY_BROWSETRACK
+	DE	Tracks durchsuchen
+	EN	Browse Tracks
+
+PLUGIN_SPOTIFY_RATELIMIT
+	DE	Zugriff beschränkt
+	EN	Rate Limited
+
+PLUGIN_SPOTIFY_USERNAME
+	DE	Spotify Benutzername
+	EN	Spotify Username	
+
+PLUGIN_SPOTIFY_PASSWORD
+	DE	Spotify Passwort
+	EN	Spotify Password
+
+PLUGIN_SPOTIFY_BITRATE
+	DE	Stream-Qualität
+	EN	Stream Quality
+
+PLUGIN_SPOTIFY_BITRATE_320
+	DE	Hoch (320k)
+	EN	High Quality (320k)
+
+PLUGIN_SPOTIFY_BITRATE_160
+	DE	Normal (160k)
+	EN	Normal Quality (160k)
+
+PLUGIN_SPOTIFY_BITRATE_96
+	DE	Niedrig (96k)
+	EN	Low Quality (96k)
+
+PLUGIN_SPOTIFY_LOCATION
+	DE	Ort
+	EN	Location
+
+PLUGIN_SPOTIFY_PORT
+	DE	Helfer-Anwendung Port
+	EN	Helper App Port
+
+PLUGIN_SPOTIFY_LOG
+	DE	Helfer-Anwendung Log
+	EN	Helper App Logging
+
+PLUGIN_SPOTIFY_TOP_100
+	EN	Top 100
+
+PLUGIN_SPOTIFY_WHATS_NEW
+	DE	Neuigkeiten
+	EN	What's New
+
+PLUGIN_SPOTIFY_SEARCH_ARTISTS
+	DE	Suche Interpreten
+	EN	Search Artists
+
+PLUGIN_SPOTIFY_SEARCH_ALBUMS
+	DE	Suche Alben
+	EN	Search Albums
+
+PLUGIN_SPOTIFY_SEARCH_TRACKS
+	DE	Suche Tracks
+	EN	Search Tracks
+
+PLUGIN_SPOTIFY_TRACKS
+	EN	Tracks
+
+PLUGIN_SPOTIFY_LOGLINK
+	EN	Log
+
+PLUGIN_SPOTIFY_USERNAME_DESC
+	DE	Gib deinen Spotify Benutzernamen ein (Premium Account notwendig)
+	EN	Enter your Spotify username (Premium Account required)
+
+PLUGIN_SPOTIFY_PASSWORD_DESC
+	DE	Gib dein Spotify Passwort ein (Premium Account notwendig)
+	EN	Enter your Spotify password (Premium Account required)
+
+PLUGIN_SPOTIFY_BITRATE_DESC
+	DE	Wähle die Stream-Qualität
+	EN	Select stream quality
+
+PLUGIN_SPOTIFY_LOCATION_DESC
+	DE	(Fortgeschritten) Freilassen, um das Land aus deinen Spotify-Einstellungen für die Top 100 Listen zu verwenden. Wähle ein anderes Land, um die Einstellung zu übersteuern, oder wenn die Top 100 Listen leer bleiben. (Gib einen zwei Buchstaben Ländercode wie z.B. CH ein, falls du keine Länderliste siehst.)
+	EN	(Advanced) Leave blank to use the country associated with your Spotify subscription for Top 100 lists.  Select a country to override this or if you do not see any entries in the Top 100 lists.  (Enter a two digit country code e.g. GB if you do not see a list of countries.)
+
+PLUGIN_SPOTIFY_PORT_DESC
+	DE	(Fortgeschritten) Wähle einen freien Port für die Helfer-Anwendung. Lass die 9005 drin, falls du nicht sicher bist, dass eine andere Anwendung diesen Port verwendet. Überprüfe die Firewall, ob sie der Helfer-Anwendung (spotifyd) Zugriff auf diesen Port gewährt.
+	EN	(Advanced) Select a free port to use for the helper application.  Leave as 9005 unless you know you have another application using this port.  Check you firewall allows the helper application (spotifyd) to accept connections on this port.
+
+PLUGIN_SPOTIFY_LOG_DESC
+	DE	(Fortgeschritten) Wähle den Log-Level für die Helfer-Anwendung.
+	EN	(Advanced) Select logging level for the helper application used by this plugin.
+
+PLUGIN_SPOTIFY_MAXTRACKS
+	EN	Maximum Tracks
+
+PLUGIN_SPOTIFY_MAXTRACKS_DESC
+	DE	(Fortgeschritten) Falls du grosse Spotify Wiedergabelisten hast, musst du ev. einen grösseren Wert angeben, damit du alle Tracks der Listen angezeigt werden. Setze den Wert zwischen 100 und 10'000.
+	EN	(Advanced) If you have large Spotify playlists you may need to increase this value so that all tracks within your playlists are show in the playlist view.  Set to a value between 100 and 10,000.
+
+PLUGIN_SPOTIFY_MAXSEARCH
+	DE	Maximale Anzahl Suchresultate
+	EN	Max Search Results
+
+PLUGIN_SPOTIFY_MAXSEARCH_DESC
+	DE	(Fortgeschritten) Beschränke die Anzahl Resultate in Suche und Neuigkeiten. Einige Benutzerschnittstellen können nicht so gut mit grossen Listen umgehen. Ändere diesen Wert, falls du mehr oder weniger Resultate sehen willst, oder wenn zu viele Resultate Probleme bereiten. Dieser Wert sollte kleiner als 1000 sein.
+	EN	(Advanced) Limit the number of results shown in Search and What's New menus on interfaces other than the server Web interface.  Some interfaces are able to cope with more results than others.  Adjust this value if you wish to see more or less results or if too many results cause problems.  It is recommended you keep this number below 1000.
+
+PLUGIN_SPOTIFY_LASTFM
+	DE	Benutze Last.fm für Ähnliche Interpreten
+	EN	Use Last.fm for Similar Artists
+
+PLUGIN_SPOTIFY_LASTFM_DESC
+	DE	Benutze Last.fm, um eine umfangreichere Auswahl ähnlicher Interpreten zu erhalten als von Spotify. Die Musikwiedergabe findet noch immer durch Spotify statt.
+	EN	Use Last.fm to create more comprehensive Similar Artist lists than provided by Spotify.  Tracks continue to be played via Spotify.
+
+PLUGIN_SPOTIFY_LASTFMUSER
+	DE	Benutze Last.fm für Interpreten Vorschläge<p>(Benutzername)
+	EN	Use Last.fm for Artist Recommedations<p>(Add Username)
+
+PLUGIN_SPOTIFY_LASTFMUSER_DESC
+	DE	Benutze diesen Last.fm Audioscrobbler Benutzernamen, um Interpreten Vorschlagslisten zu erstellen.
+	EN	Use this Last.fm audioscrobbler username to create Recommended Artist lists.
+
+PLUGIN_SPOTIFY_NO_OTHER_STREAMING
+	DE	Benutze immer die Helfer-Anwendung zum Streamen
+	EN	Always Stream via Helper
+
+PLUGIN_SPOTIFY_NO_OTHER_STREAMING_DESC
+	DE	Benutze immer dieses Plugin und seine Helfer-Anwendung fürs Streaming. Dies deaktiviert das Firmware Streaming für manche Geräte mit Logitech Spotify support. Dies ermöglicht es, Streams auf deinem Server zwischenzuspeichern und den Netzwerkverkehr zu reduzieren. (Beachte, dass Firmware Streaming automatisch deaktiviert wird, wenn Player synchronisiert werden, oder für Player, die keinen Spotify Support in der Firmware haben.)
+	EN	Always use this plugin and its helper application for streaming.  This will disable firmware streaming for any players with built-in Logitech Spotify support.  This will allow caching of streams on your server and may reduce network traffic and rebuffering events.  (Note firmware streaming is automatically bypassed when players are synchronised and for players which do not have built-in Spotify support.)
+
+PLUGIN_SPOTIFY_OTHER_META
+	DE	Benutze integrierte Formatierung
+	EN	Use Built-in Formatting
+
+PLUGIN_SPOTIFY_OTHER_META_DESC
+	DE	Benutze Standard Logitech Formatierung für Wiedergabelisten und Anzeigen der aktuellen Wiedergabe anstelle der von diesem Plugin zur Verfügung gestellten Formate. (Dies deaktiviert einige Funktionen des Plugins.)
+	EN	Use standard Logitech formatting for playlist and now playing displays, plus playlist context menus rather than formats provided by this plugin and its helper application.  (This will disable some of the plugin functionality.)
+
+PLUGIN_SPOTIFY_ON_SPOTIFY
+	DE	Auf Spotify
+	EN	On Spotify
+
+PLUGIN_SPOTIFY_SIMILAR_ARTISTS
+	DE	Ähnliche Interpreten
+	EN	Similar Artists
+
+PLUGIN_SPOTIFY_RECOMMENDED_ARTISTS
+	DE	Empfohlene Interpreten
+	EN	Recommended Artists
+
+PLUGIN_SPOTIFY_RECOMMENDED_ARTISTS_MIX
+	DE	Interpreten Mix
+	EN	Artist Mix
+
+PLUGIN_SPOTIFY_BIOGRAPHY
+	DE	Biographie
+	EN	Biography
+
+PLUGIN_SPOTIFY_NO_BIO_AVAIL
+	DE	Keine Biographie verfügbar
+	EN	No Biography Available
+
+PLUGIN_SPOTIFY_RECENT_ARTISTS
+	DE	Kürzlich gehörte Interpreten
+	EN	Recent Artists
+
+PLUGIN_SPOTIFY_RECENT_ALBUMS
+	DE	Kürzlich gehörte Alben
+	EN	Recent Albums
+
+PLUGIN_SPOTIFY_RECENT_SEARCHES
+	DE	Kürzlich getätigte Suchen
+	EN	Recent Searches
+
+PLUGIN_SPOTIFY_API
+	EN	Libspotify API
+
+SETUP_DEBUG_LEVEL_SDEBUG
+	EN	Debug Streaming
+
+PLUGIN_SPOTIFY_STREAM_FAILED1
+	DE	Track nicht verfügbar
+	EN	Track Not Available
+
+PLUGIN_SPOTIFY_STREAM_FAILED2
+	DE	Stream fehlgeschlagen (starte Spotify App neu)
+	EN	Stream Failed (Restarting Spotify App)
+
+PLUGIN_SPOTIFY_BAD_PLAYER
+	DE	Ungültiger Player (Fehler: %s)
+	EN	Bad Player (Error: %s)
+
+PLUGIN_SPOTIFY_PLAYLIST_URI
+	DE	Wiedergabelisten anderer Hörer
+	EN	Other's Playlist
+
+PLUGIN_SPOTIFY_REMOVE_FROM_LIST
+	DE	Entferne aus dem Wiedergabelisten Menü
+	EN	Remove from Playlist Menu
+
+PLUGIN_SPOTIFY_PLAYLIST_ERROR
+	DE	Fehler: ungültige Spotify URI
+	EN	Error: Invalid Spotify URI
+
+SFLC
+	EN	Spotify
+
+PLUGIN_SPOTIFY_HINT
+	DE	Installationshilfe
+	EN	Installation Help
+
+PLUGIN_SPOTIFY_WINHINT
+	DE	Falls die Helfer-Anwendung nicht korrekt startet musst du ev. die "Microsoft Visual C++ 2010 Redistributable Package (x86)" von <a href="http://www.microsoft.com/en-gb/download/details.aspx?id=8328">Microsoft</a> herunterladen.
+	EN	If the helper application is not running you may need to download and install the "Microsoft Visual C++ 2010 Redistributable Package (x86)" which is available from <a href="http://www.microsoft.com/en-gb/download/details.aspx?id=8328">Microsoft</a>.
+
+PLUGIN_SPOTIFY_UNIXHINT
+	DE	Falls die Helfer-Anwendung nicht startet, überprüfe bitte, dass du einen Intel/AMD oder ARM basierten Server verwendest. Dieses Plugin kann keine anderen Architekturen unterstützen, da die Spotify Softwarebibliothek nur auf diesen Plattformen zur Verfügung steht.
+	EN	If the helper application is not running, please check that you have an Intel/Amd or ARM based server.  This plugin is unable to support devices with non Intel/Amd/ARM based processors as the Spotify software library used is only available for these processors.
+
+PLUGIN_SPOTIFY_ALBUM_NOT_AVAILABLE
+	DE	Album ist in deinem Land nicht verfügbar
+	EN	Album not available in your country
+
+PLUGIN_SPOTIFY_PLAYLIST_STARRED
+	DE	Markierte Tracks
+	EN	Starred Tracks
+
+PLUGIN_SPOTIFY_SPOTIFY_ERROR
+	DE	Spotify Fehler:
+	EN	Spotify Error : 
+
+PLUGIN_SPOTIFY_PLAYER_NOT_SUPPORTED
+	DE	Player wird nicht unterstützt
+	EN	Player Not Supported
+
+PLUGIN_SPOTIFY_ARTIST_MIX
+	DE	Interpreten Mix:
+	EN	Artist Mix: 
+
+PLUGIN_SPOTIFY_SIMILAR_ARTISTS_MIX
+	DE	Ähnliche Interpreten Mix:
+	EN	Similar Artists Mix: 
+
+PLUGIN_SPOTIFY_RADIO
+	EN	Radio
+
+PLUGIN_SPOTIFY_STARRED
+	DE	Markierung entfernen
+	EN	Starred (Remove)
+
+PLUGIN_SPOTIFY_NOTSTARRED
+	DE	Track markieren
+	EN	Star Track
+
+PLUGIN_SPOTIFY_STAR_ADDED
+	DE	Markiert
+	EN	Starred
+
+PLUGIN_SPOTIFY_STAR_REMOVED
+	DE	Markierung entfernt
+	EN	Star Removed
+
+PLUGIN_SPOTIFY_PLAYLIST_REMOVED
+	DE	Wiedergabeliste entfernen
+	EN	Playlist Removed
+
+PLUGIN_SPOTIFY_NO_SEARCH_RESULTS
+	DE	Keine Suchresultate gefunden
+	EN	No Search Results Found
+
+PLUGIN_SPOTIFY_ARTSIST_TOP_TRACKS
+	EN	Top 10 Tracks
+
+PLUGIN_SPOTIFY_APP
+	DE	In meinen Anwendungen aufführen
+	EN	Show in My Apps
+
+PLUGIN_SPOTIFY_APP_DESC
+	DE	Wenn aktiviert, dann erscheint das Spotify menu in Meine Anwendungen anstatt im Internet Radio Menü. Beachte, dass du den Server neu starten musst, um diese Einstellung zu aktivieren.
+	EN	When set the plugin will appear in the My Apps menu rather than Internet Radio menu.  Note that you will need to restart the server after changing this setting.
+
+PLUGIN_SPOTIFY_ALBUM_ALBUM
+	DE	Alben
+	EN	Albums
+
+PLUGIN_SPOTIFY_ALBUM_SINGLE
+	EN	Singles
+
+PLUGIN_SPOTIFY_ALBUM_COMPILATION
+	DE	Kompilationen
+	EN	Compilation
+
+PLUGIN_SPOTIFY_ALBUM_APPEARS_ON
+	DE	Erscheint auf
+	EN	Appears On
+
+PLUGIN_SPOTIFY_ALBUM_OTHER
+	DE	Andere
+	EN	Other
+
+PLUGIN_SPOTIFY_ARTIST_IMAGES
+	DE	Interpreten Bilder
+	EN	Artist Images
+
+PLUGIN_SPOTIFY_VOLNORM
+	DE	Lautstärke-Normalisierung
+	EN	Volume Normalisation
+
+PLUGIN_SPOTIFY_VOLNORM_DESC
+	DE	Aktiviere Lautstärke-Normalisierung bei der Wiedergabe von Spotify Tracks. Ev. bevorzugst du die Tonqualität ohne diese Einstellung, dafür kann es zu variierender Lautstärke zwischen Tracks kommen.
+	EN	Apply volume normalisation when playing Spotify tracks.  You may prefer the audio quality with this option disabled but it will result in volume levels varying across different tracks.
+
+PLUGIN_SPOTIFY_NOCACHE
+	DE	Cache deaktivieren
+	EN	Disable Cache	
+
+PLUGIN_SPOTIFY_NOCACHE_DESC
+	DE	Deaktiviere den Zwischenspeicher für Tracks und Metadaten. Dies erhöht den Netzwerkverkehr, reduziert jedoch die Festplatten-Nutzung. Standardmässig verwendet dieses Plugin bis 10% des verfügbaren Speicherplatzes für seinen Zwischenspeicher. Mit dieser Option wird der Platzverbrauch minimiert.
+	EN	Select to disable caching of spotify tracks and metadata to the server hard disk.  This will increase network traffic but reduce disk usage.  By default the plugin will use up to 10% of available free disk space for its cache.  With this option selected it will use minumum disk space.
+
+# Version 2 plugin
+
+PLUGIN_SPOTIFY_NO_TITLE
+	DE	Kein Titel
+	EN	No Title
+
+PLUGIN_SPOTIFY_SEARCHURI
+	DE	Suche
+	EN	Search
+
+PLUGIN_SPOTIFY_LIBRARY
+	DE	Sammlung
+	EN	Library
+
+PLUGIN_SPOTIFY_PLAYLIST_INBOX
+	EN	Inbox
+
+PLUGIN_SPOTIFY_DID_YOU_MEAN
+	DE	Meintest du: %s ?
+	EN	Did you mean: %s ?
+
+PLUGIN_SPOTIFY_ADDED
+	DE	Zu Sammlung hinzugefügt
+	EN	Added to Library
+
+PLUGIN_SPOTIFY_REMOVED
+	DE	Aus Sammlung entfernt
+	EN	Removed from Library
+
+PLUGIN_SPOTIFY_PLAYLIST_ADD_NEW_TRACK
+	DE	Track zu neuer Widergabeliste hinzufügen
+	EN	Add Track to New Playlist
+
+PLUGIN_SPOTIFY_PLAYLIST_ADD_TRACK
+	DE	Track zu bestehender Wiedergabeliste hinzufügen
+	EN	Add Track to Existing Playlist
+
+PLUGIN_SPOTIFY_PLAYLIST_ADD_NEW_ALBUM
+	DE	Album zu neuer Widergabeliste hinzufügen
+	EN	Add Album to New Playlist
+
+PLUGIN_SPOTIFY_PLAYLIST_ADD_ALBUM
+	DE	Album zu bestehender Widergabeliste hinzufügen
+	EN	Add Album to Existing Playlist
+
+PLUGIN_SPOTIFY_ADDED_TO_PLAYLIST
+	DE	Zu Wiedergabeliste hinzugefügt
+	EN	Added to Playlist
+
+PLUGIN_SPOTIFY_PLAYLIST_RENAME
+	DE	Wiedergabeliste umbenennen
+	EN	Rename Playlist
+
+PLUGIN_SPOTIFY_PLAYLIST_RENAMED
+	DE	Wiedergabeliste umbenannt
+	EN	Playlist Renamed
+
+PLUGIN_SPOTIFY_PLAYLIST_DELETE
+	DE	Wiedergabeliste löschen
+	EN	Delete Playlist
+
+PLUGIN_SPOTIFY_PLAYLIST_DELETE_TRACK
+	DE	Track entfernen
+	EN	Delete Track
+
+PLUGIN_SPOTIFY_PLAYLIST_DELETE_NAME
+	DE	Entferne: %s
+	EN	Delete: %s
+
+PLUGIN_SPOTIFY_PLAYLIST_DELETED
+	DE	Wiedergabeliste gelöscht
+	EN	Playlist Deleted
+
+PLUGIN_SPOTIFY_PLAYLIST_TRACK_DELETED
+	DE	Track entfernt
+	EN	Track Deleted
+
+PLUGIN_SPOTIFY_PLAYLIST_CANCELLED
+	DE	Abgebrochen
+	EN	Cancelled
+
+PLUGIN_SPOTIFY_STAR
+	DE	Markieren
+	EN	Star
+
+PLUGIN_SPOTIFY_PLAYLISTEDIT
+	DE	Wiedergabeliste bearbeiten
+	EN	Playlist Edit
+
+PLUGIN_SPOTIFY_FRIENDS
+	DE	Freunde
+	EN	Friends
+
+PLUGIN_SPOTIFY_LIBRARY_ADD_TRACK
+	DE	Track zu Sammlung hinzufügen
+	EN	Add Track to Library
+
+PLUGIN_SPOTIFY_LIBRARY_ADD_ALBUM
+	DE	Album zu Sammlung hinzufügen
+	EN	Add Album to Library
+
+PLUGIN_SPOTIFY_LIBRARY_ADD_ARTIST
+	DE	Interpreten zu Sammlung hinzufügen
+	EN	Add Artist to Library
+
+PLUGIN_SPOTIFY_LIBRARY_ADD_ARTIST_NAME
+	DE	Interpreten (%s) zu Sammlung hinzufügen
+	EN	Add Artist (%s) to Library
+
+PLUGIN_SPOTIFY_LIBRARY_REMOVE_TRACK
+	DE	Track aus Sammlung entfernen
+	EN	Remove Track from Library
+
+PLUGIN_SPOTIFY_LIBRARY_REMOVE_ALBUM
+	DE	Album aus Sammlung entfernen
+	EN	Remove Album from Library
+
+PLUGIN_SPOTIFY_LIBRARY_REMOVE_ARTIST
+	DE	Interpreten aus Sammlung entfernen
+	EN	Remove Artist from Library
+
+PLUGIN_SPOTIFY_LIBRARY_REMOVE_ARTIST_NAME
+	DE	Interpreten (%s) aus Sammlung entfernen
+	EN	Remove Artist (%s) from Library
+
+PLUGIN_SPOTIFY_TEST
+	DE	Selbsttest
+	EN	Self Test
+
+PLUGIN_SPOTIFY_TEST_DESC
+	DE	Automatisierte Tests der Funktionalität dieses Plugins. Klicke und lass das Browser-Fenster für ca. 5 Minuten offen, um die Tests durchzuführen. Beachte, dass als Teil der Tests das Plugin einen zufälligen Track durch deinen Player wiedergeben wird.
+	EN	Automated tests to check the operation of the plugin.  Click start and leave the browser window open for around 5 minutes to perform tests.  Note as part of the tests the plugin will play a random track through your selected player.
+
+PLUGIN_SPOTIFY_START
+	DE	Test starten
+	EN	Start Test
+
+PLUGIN_SPOTIFY_HELPERNAME
+	DE	Helfer-Anwendung Speicherort
+	EN	Helper App Location
+
+PLUGIN_SPOTIFY_HELPERNAME_DESC
+	DE	Stelle sicher, dass deine Firewall Verbindungen auf den Port der Helfer-Anwendung zulässt.
+	EN	Ensure your firewall allows incomming connections to this application on the Helper App Port
+
+PLUGIN_SPOTIFY_LIBRARY_BACKUP
+	EN	Library Backup
+
+PLUGIN_SPOTIFY_LIBRARY_DESC
+	EN	Backup and restore of the Spotify Artist/Album/Track library which is provided by the plugin
+
+PLUGIN_SPOTIFY_BACKUP
+	EN	Backup
+
+PLUGIN_SPOTIFY_BACKUP_DETAIL
+	EN	Backup Library to File:
+
+PLUGIN_SPOTIFY_BACKUP_DESC
+	EN	Enter directory or name of file to backup library to.  The library will be saved as spotifylibrary.json within the directory given or the filename with .json added if it is not included.
+
+PLUGIN_SPOTIFY_RESTORE
+	EN	Restore
+
+PLUGIN_SPOTIFY_RESTORE_DETAIL
+	EN	Restore Library from File:
+
+PLUGIN_SPOTIFY_RESTORE_DESC
+	EN	Enter name of file to restore library from (must have been previously exported by plugin and will end in .json)
+
+PLUGIN_SPOTIFY_CANCEL
+	EN	Cancel
+
+PLUGIN_SPOTIFY_BACKUP_SAVED
+	EN	Library backup saved as: %s
+
+PLUGIN_SPOTIFY_BACKUP_FAILED
+	EN	Failed to save backup
+
+PLUGIN_SPOTIFY_RESTORED
+	EN	Library restored from: %s
+
+PLUGIN_SPOTIFY_RESTORE_FAILED
+	EN	Failed to restore Libary from: %s
+
+PLUGIN_SPOTIFY_RADIOGENRES
+	EN	Radio Genres
+
+PLUGIN_SPOTIFY_RADIOGENRES_DESC
+	EN	Select the number of genres to appear in the Radio menu
