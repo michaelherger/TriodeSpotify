@@ -2,40 +2,49 @@ package Plugins::Spotify::Image;
 
 use strict;
 
-use vars qw(@ISA);
 use Tie::Cache::LRU;
-
-use Slim::Utils::Log;
-
-my $log;
-
-BEGIN {
-	$log = logger('plugin.spotify'); 
-
-	if (Slim::Utils::Versions->compareVersions($::VERSION, 7.8) < 0) {
-		$log->info("using Image7x");
-		require Plugins::Spotify::Image7x;
-		push @ISA, 'Plugins::Spotify::Image7x';
-	} else {
-		$log->info("using Image78");
-		require Plugins::Spotify::Image78;
-		push @ISA, 'Plugins::Spotify::Image78';
-	}
-}
 
 tie our %largeImageMap, 'Tie::Cache::LRU', 500;
 
-sub getLargeImage {
-	my ($class, $image, $resizeParams) = @_;
+use Slim::Utils::Log;
+use Slim::Web::Graphics;
+use Slim::Web::ImageProxy;
 
-	if ($resizeParams && $resizeParams->[0] > 250 && $resizeParams->[1] > 250 && $largeImageMap{ $image }) {
+use Plugins::Spotify::Image;
+use Plugins::Spotify::Spotifyd;
 
-		$log->info("Converting to large image: $image -> $largeImageMap{$image}");
+my $log = logger('plugin.spotify');
 
-		return $largeImageMap{$image};
+sub init {
+	Slim::Web::ImageProxy->registerHandler(
+		match => qr/spotify:image:/,
+		func  => \&resizeHandler,
+	);
+}
+
+sub resizeHandler {
+	my ($url, $spec) = @_;
+
+	my @resizeParams = Slim::Web::Graphics->parseSpec($spec);
+	
+	# "full size" (no size params) shall return the large image if possible
+	$resizeParams[0] ||= 9999;
+	$resizeParams[1] ||= 9999;
+
+	$url = __PACKAGE__->getLargeImage($url, \@resizeParams);
+
+	if (scalar @resizeParams && $resizeParams[0] > 250 && $resizeParams[1] > 250 && $largeImageMap{ $url }) {
+
+		$log->info("Converting to large image: $url -> $largeImageMap{$url}");
+
+		$url = $largeImageMap{$url};
 	}
 	
-	return $image;
+	return Plugins::Spotify::Spotifyd->uri("$url/cover.jpg");
+}
+
+sub uri {
+	return "imageproxy/$_[1]/image.jpg";
 }
 
 1;

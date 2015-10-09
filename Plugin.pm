@@ -7,8 +7,7 @@ package Plugins::Spotify::Plugin;
 # The plugin relies on a separate binary spotifyd which is linked to libspotify
 
 use strict;
-
-use vars qw(@ISA);
+use base 'Slim::Plugin::OPMLBased';
 
 use JSON::XS::VersionOneAndTwo;
 use File::Spec::Functions;
@@ -21,35 +20,18 @@ use Slim::Utils::Strings qw(string cstring);
 use Plugins::Spotify::Settings;
 use Plugins::Spotify::Spotifyd;
 use Plugins::Spotify::Image;
-use Plugins::Spotify::ContextMenu;
 use Plugins::Spotify::Radio;
 use Plugins::Spotify::Library;
 use Plugins::Spotify::Recent;
 
-my $log;
-my $compat;
+my $log = Slim::Utils::Log->addLogCategory({
+	'category'     => 'plugin.spotify',
+	'defaultLevel' => 'WARN',
+	'description'  => string('PLUGIN_SPOTIFY'),
+}); 
+
 my $prefs  = preferences('plugin.spotify');
 my $sprefs = preferences('server');
-
-BEGIN {
-	$log = Slim::Utils::Log->addLogCategory({
-		'category'     => 'plugin.spotify',
-		'defaultLevel' => 'WARN',
-		'description'  => string('PLUGIN_SPOTIFY'),
-	}); 
-
-	# Always use OneBrowser version of XMLBrowser by using server or packaged version included with plugin
-	if (exists &Slim::Control::XMLBrowser::findAction) {
-		$log->info("using server XMLBrowser");
-		require Slim::Plugin::OPMLBased;
-		push @ISA, 'Slim::Plugin::OPMLBased';
-	} else {
-		$log->info("using packaged XMLBrowser: Slim76Compat");
-		require Slim76Compat::Plugin::OPMLBased;
-		push @ISA, 'Slim76Compat::Plugin::OPMLBased';
-		$compat = 1;
-	}
-}
 
 sub initPlugin {
 	my $class = shift;
@@ -80,8 +62,6 @@ sub initPlugin {
 
 	Plugins::Spotify::Settings->new;
 
-	Plugins::Spotify::ContextMenu->init;
-
 	Plugins::Spotify::Radio->init;
 
 	Plugins::Spotify::Library->init;
@@ -94,49 +74,6 @@ sub initPlugin {
 	Slim::Web::Pages->addPageFunction("^spotifyd.log", \&Plugins::Spotify::Spotifyd::logHandler);
 
 	Plugins::Spotify::Image->init();
-
-	Slim::Menu::TrackInfo->registerInfoProvider( spotify => (
-		after => 'middle',
-		func  => \&trackInfoMenu,
-	) );
-
-	Slim::Menu::TrackInfo->registerInfoProvider( spotifystar => (
-		before => 'addtrack',
-		func  => \&trackInfoMenuStar,
-	) );
-
-	# override built in track info provider - note this handles all urls
-	Slim::Menu::TrackInfo->registerInfoProvider( contributors => (
-		after => 'top',
-		func  => \&trackInfoContributorsMenu,
-	) );
-
-	# override built in track info provider - note this handles all urls
-	Slim::Menu::TrackInfo->registerInfoProvider( album => (
-		after => 'contributors',
-		func  => \&trackInfoAlbumMenu,
-	) );
-
-	Slim::Menu::TrackInfo->registerInfoProvider( spotifylibrary => (
-		after     => 'spotifystar',
-		func      => \&trackInfoLibraryMenu,
-	) );
-
-	Slim::Menu::TrackInfo->registerInfoProvider( spotifyplaylist => (
-		after     => 'spotifylibrary',
-		func      => \&trackInfoPlaylistMenu,
-	) );
-
-	Slim::Menu::ArtistInfo->registerInfoProvider( spotify => (
-		after => 'middle',
-		func  => \&artistInfoMenu,
-	) );
-
-	Slim::Menu::GlobalSearch->registerInfoProvider( spotify => (
-		after => 'middle',
-		name  => 'PLUGIN_SPOTIFY',
-		func  => \&searchInfoMenu,
-	) );
 
 	Slim::Control::Request::addDispatch(['spotifyitemcmd',  'items', '_index', '_quantity' ], [0, 1, 1, \&itemCommand]);
 
@@ -162,8 +99,6 @@ sub shutdownPlugin {
 sub playerMenu { shift->can('nonSNApps') && $prefs->get('is_app') ? undef : 'RADIO' }
 
 sub getDisplayName { 'PLUGIN_SPOTIFY' }
-
-sub compat { $compat }
 
 sub toplevel {
 	my ($client, $callback, $args) = @_;
@@ -203,14 +138,6 @@ sub toplevel {
 
 sub level {
 	my ($client, $callback, $args, $classid, $session) = @_;
-
-	# if called from 7.5 native xmlbrowser we will have no args hash, also wrap callback as 7.5 xmlbrowser expects array refs
-	if ($compat && (!ref $args || ref $args ne 'HASH')) {
-		my $cb;
-		($client, $cb, $classid, $session) = @_;
-		$args = {};
-		$callback = sub { $cb->(ref $_[0] && ref $_[0] eq 'HASH' ?  $_[0]->{'items'} : $_[0] ) };
-	}
 
 	# for some reason we can get called via a TT template from the web interface, but with no args
 	return if !defined $client && !defined $callback;
@@ -323,12 +250,7 @@ sub itemCommand {
 		$callback->($array);
 	} : undef;
 
-	# call xmlbrowser using compat version if necessary
-	if (!$compat) {
-		Slim::Control::XMLBrowser::cliQuery($command, $wrapper || $feed, $request);
-	} else {
-		Slim76Compat::Control::XMLBrowser::cliQuery($command, $wrapper || $feed, $request);
-	}
+	Slim::Control::XMLBrowser::cliQuery($command, $wrapper || $feed, $request);
 }
 
 sub plCommand {
@@ -416,14 +338,7 @@ sub plCommand {
 
 				$log->info("${cmd}ing " . scalar @objs . " tracks" . ($ind ? " starting at $ind" : ""));
 
-				if (!$compat) {
-					$client->execute([ 'playlist', "${cmd}tracks", 'listref', \@objs, undef, $ind ]);
-				} else {
-					$client->execute([ 'playlist', "${cmd}tracks", 'listref', \@objs ]);
-					if ($cmd eq 'load' && $ind) {
-						$client->execute([ 'playlist', 'jump', $ind ]);
-					}
-				}
+				$client->execute([ 'playlist', "${cmd}tracks", 'listref', \@objs, undef, $ind ]);
 			},
 
 			sub { $log->warn("error: $_[1]") }
@@ -444,219 +359,6 @@ sub setMaxTracks {
 	$remoteTrackLRUCache->max_size($size);	
 	$remoteTrackLRUidIndex->max_size($size);
 	$largeImageMap->max_size($size);
-}
-
-sub trackInfoMenu {
-	my ($client, $url, $track, $remoteMeta) = @_;
-	
-	return unless $client;
-	
-	my $artist = $track->remote ? $remoteMeta->{artist} : $track->artistName;
-	my $album  = $track->remote ? $remoteMeta->{album}  : ( $track->album ? $track->album->name : undef );
-	my $title  = $track->remote ? $remoteMeta->{title}  : $track->title;
-
-	my @menu;
-
-	if ($artist) {
-		push @menu, {
-			name        => cstring($client, 'ARTIST') . ": " . $artist,
-			url         => \&level,
-			passthrough => [ 'Search', { query => "artist:\"$artist\"", artistsearch => 1, exact => 1 } ],
-			type        => 'link',
-			favorites   => 0,
-		},
-	};
-
-	if ($album) {
-		push @menu, {
-			name        => cstring($client, 'ALBUM') . ": " . $album,
-			url         => \&level,
-			passthrough => [ 'Search', { query => "album:\"$album\"", albumsearch => 1, exact => 1 } ],
-			type        => 'link',
-			favorites   => 0,
-		},
-	};
-
-	if ($track) {
-		push @menu, {
-			name        => cstring($client, 'TRACK') . ": " . $title,
-			url         => \&level,
-			passthrough => [ 'Search', { query => "track:\"$title\" AND artist:\"$artist\"", tracksearch => 1, exact => 1 } ],
-			type        => 'link',
-			favorites   => 0,
-		},
-	};
-
-	if (scalar @menu) {
-		return {
-			name  => string('PLUGIN_SPOTIFY_ON_SPOTIFY'),
-			items => \@menu,
-		};
-	}
-
-	return undef;
-}
-
-sub trackInfoMenuStar {
-	my ($client, $url, $track, $remoteMeta) = @_;
-
-	return unless $url =~ /^spotify:track/;
-
-	my $starred = Plugins::Spotify::ProtocolHandler->getMetadataFor($client, $url)->{'starred'};
-
-	return {
-		name => string($starred ? 'PLUGIN_SPOTIFY_STARRED' : 'PLUGIN_SPOTIFY_NOTSTARRED'),
-		url  => sub {
-			my ($client, $cb) = @_;
-			# in onebrowser we can get called from the template - return without processing
-			return unless $client;
-			$client->execute([ 'spotify', 'star', $url, $starred ? 0 : 1 ]);
-			my $resp = { showBriefly => 1, popback => 2, type => 'text',
-						 name => string($starred ? 'PLUGIN_SPOTIFY_STAR_REMOVED' : 'PLUGIN_SPOTIFY_STAR_ADDED') };
-			$cb->([$resp]);
-		},
-		type => 'link',
-		nextWindow => 'parent',
-		forceRefresh => 1,
-		favorites => 0,
-	};
-}
-
-sub trackInfoContributorsMenu {
-	my ($client, $url, $track, $remoteMeta) = @_;
-
-	# use built in handler for all track types other than spotify
-	if ($url !~ /^spotify:track/) {
-		return Slim::Menu::TrackInfo::infoContributors(@_);
-	}
-
-	if ($remoteMeta->{'artistA'}) {
-
-		my @items;
-
-		for my $artist (@{$remoteMeta->{'artistA'}}) {
-			push @items, {
-				type        => 'link',
-				name        => $artist->{'name'},
-				label       => 'ARTIST',
-				url         => 'anyurl',
-				itemActions => Plugins::Spotify::ParserBase->actions({ items => 1, uri => $artist->{'uri'} }),
-			};
-		}
-
-		return \@items;
-	}
-}
-
-sub trackInfoAlbumMenu {
-	my ($client, $url, $track, $remoteMeta) = @_;
-	
-	# use built in handler for all track types other than spotify
-	if ($url !~ /^spotify:track/) {
-		return Slim::Menu::TrackInfo::infoAlbum(@_);
-	}
-
-	if ($remoteMeta->{'album'} && $remoteMeta->{'albumuri'}) {
-		return {
-			type        => 'link',
-			name        => $remoteMeta->{'album'},
-			label       => 'ALBUM',
-			url         => 'anyurl',
-			itemActions => Plugins::Spotify::ParserBase->actions({ items => 1, uri => $remoteMeta->{'albumuri'} }),
-			favorites   => 0,
-		};
-	}
-}
-
-sub trackInfoLibraryMenu {
-	my ($client, $url, $track, $remoteMeta) = @_;
-	
-	return unless $url =~ /^spotify:track/ && $remoteMeta && $remoteMeta->{'albumuri'};
-
-	my ($cover) = $remoteMeta->{'cover'} =~ /(spotify:image:.*)\//;
-	
-	# wrapper around our context menu, recreate track info hash for this
-	my $info = {
-		starred  => $remoteMeta->{'starred'},
-		name     => $remoteMeta->{'title'},
-		albumuri => $remoteMeta->{'albumuri'},
-		duration => $remoteMeta->{'duration'},
-		uri      => $url,
-		album    => $remoteMeta->{'album'},
-		cover    => $cover,
-		artists  => $remoteMeta->{'artistA'},
-	};
-	
-	return Plugins::Spotify::ContextMenu::library($client, $url, { uri => $url }, $info);
-}
-
-sub trackInfoPlaylistMenu {
-	my ($client, $url, $track, $remoteMeta) = @_;
-	
-	return unless $url =~ /^spotify:track/ && $remoteMeta && $remoteMeta->{'albumuri'};
-
-	my ($cover) = $remoteMeta->{'cover'} =~ /(spotify:image:.*)\//;
-	
-	# wrapper around our context menu, recreate track info hash for this
-	my $info = {
-		starred  => $remoteMeta->{'starred'},
-		name     => $remoteMeta->{'title'},
-		albumuri => $remoteMeta->{'albumuri'},
-		duration => $remoteMeta->{'duration'},
-		uri      => $url,
-		album    => $remoteMeta->{'album'},
-		cover    => $cover,
-		artists  => $remoteMeta->{'artistA'},
-	};
-	
-	return Plugins::Spotify::ContextMenu::playlist($client, $url, { uri => $url }, $info);
-}
-
-sub artistInfoMenu {
-	my ($client, $url, $obj, $remoteMeta) = @_;
-
-	my $artist = $obj && $obj->name;
-
-	if ($artist) {
-		return {
-			name        => string('PLUGIN_SPOTIFY_ON_SPOTIFY'),
-			url         => \&level,
-			passthrough => [ 'Search', { query => $artist, artistsearch => 1, exact => 1 } ],
-			type        => 'link',	
-			favorites   => 0,
-		};
-	}
-}
-
-sub searchInfoMenu {
-	my ($client, $tags) = @_;
-
-	my $query = $tags->{'search'};
-
-	return {
-		name => string('PLUGIN_SPOTIFY'),
-		search => $query,
-		items => [
-			{
-				name   => string('PLUGIN_SPOTIFY_SEARCH_ARTISTS'),
-				url    => \&level,
-				passthrough => [ 'Search', { query => $query, artistsearch => 1 } ],
-				search => $query,
-			},
-			{
-				name   => string('PLUGIN_SPOTIFY_SEARCH_ALBUMS'),
-				url    => \&level,
-				passthrough => [ 'Search', { query => $query, albumsearch => 1 } ],
-				search => $query,
-			},
-			{
-				name   => string('PLUGIN_SPOTIFY_SEARCH_TRACKS'),
-				url    => \&level,
-				passthrough => [ 'Search', { query => $query, tracksearch => 1 } ],
-				search => $query,
-			},
-		],
-	};
 }
 
 sub cliStar {

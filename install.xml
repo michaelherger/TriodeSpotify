@@ -3,16 +3,17 @@
 <extension>
 	<name>PLUGIN_SPOTIFY</name>
 	<module>Plugins::Spotify::Plugin</module>
-	<version>2.3.9</version>
+	<version>3.0.0</version>
 	<defaultState>enabled</defaultState>
 	<description>PLUGIN_SPOTIFY_DESC</description>
-	<creator>Triode</creator>
+	<creator>Triode, Michael Herger</creator>
 	<email>triode1@btinternet.com</email>
 	<icon>plugins/Spotify/html/images/spotify.png</icon>
 	<optionsURL>plugins/Spotify/settings/basic.html</optionsURL>
 	<targetApplication>
 		<id>SlimServer</id>
-		<minVersion>7.5</minVersion>
+		<!-- 7.8 is required for ImageProxy -->
+		<minVersion>7.8</minVersion>
         <maxVersion>*</maxVersion>
 	</targetApplication>
 </extension>
