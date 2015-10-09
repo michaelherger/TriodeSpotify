@@ -17,14 +17,12 @@ my $prefs = preferences('plugin.spotify');
 my $log   = logger('plugin.spotify');
 my $jsver;
 
-$prefs->init({ username => 'username', location => '',
+$prefs->init({ username => 'username', 
 			   bitrate => '320', httpport => '9005', loglevel => 'INFO', agree => 0,
-			   maxtracks => 500, maxsearch => 500, nootherstreaming => 0, othermeta => 0,
-			   lastfm => 0, lastfuser => "", volnorm => 1, nocache => 0,
-			   is_app => 1, radio_genres => 20 });
+			   nootherstreaming => 0, volnorm => 1, nocache => 0,
+});
 
-$prefs->setValidate({ validator => 'intlimit', low => 100, high => 10000 }, 'maxtracks');
-$prefs->setValidate('num', qw(maxsearch httpport));
+$prefs->setValidate('num', qw(httpport));
 
 # 1 & 2 removed
 
@@ -34,9 +32,9 @@ $prefs->migrate(3, sub {
 });
 
 $prefs->migrate(4, sub { 
-	# this download is used to count the number of installs of the plugin, it only occurs once
-	my $arch = Slim::Utils::OSDetect::OS();
-	Slim::Networking::SimpleAsyncHTTP->new(sub {}, sub {})->get("http://triodeplugins.googlecode.com/files/SpotifyCounter2-$arch");
+#	# this download is used to count the number of installs of the plugin, it only occurs once
+#	my $arch = Slim::Utils::OSDetect::OS();
+#	Slim::Networking::SimpleAsyncHTTP->new(sub {}, sub {})->get("http://triodeplugins.googlecode.com/files/SpotifyCounter2-$arch");
 	1;
 });
 
@@ -48,10 +46,6 @@ $prefs->migrate(5, sub {
 	}
 	1;
 });
-
-BEGIN {
-	eval { require Locale::Country };
-}
 
 sub new {
 	$jsver = Plugins::Spotify::Plugin->_pluginDataFor('version') || int(rand(1000000));
@@ -77,65 +71,6 @@ sub handler {
 
 			$prefs->set('agree', $params->{'agree'});
 
-		} elsif ($params->{'backup_page'} || $params->{'restore_page'}) {
-
-			if ($params->{'cancel'}) {
-
-				delete $params->{'backup'}; 
-				delete $params->{'restore'};
-				delete $params->{'saveSettings'};
-
-			} elsif ($params->{'filename'} && $params->{'filename'} ne '') {
-
-				my $filename = $params->{'filename'};
-
-				if (-d $filename) {
-					$filename = catdir($filename, "spotifylibrary.json");
-				} elsif ($filename !~ /\.json$/) {
-					$filename .= ".json";
-				}
-				
-				if (dirname($filename) eq '.' && Slim::Utils::Misc::getPlaylistDir()) {
-					$filename = catdir(Slim::Utils::Misc::getPlaylistDir(), $filename);
-				}
-
-				$log->debug("filename: $filename");
-				
-				if ($params->{'backup_page'}) {
-					
-					$log->info("library backup to $filename");
-
-					if (Plugins::Spotify::Library->backup($filename)) {
-
-						$params->{'warning'} = sprintf(string("PLUGIN_SPOTIFY_BACKUP_SAVED"), $filename);
-
-					} else {
-
-						$params->{'warning'} = string("PLUGIN_SPOTIFY_BACKUP_FAILED");
-					}
-				}
-
-				if ($params->{'restore_page'}) {
-
-					if (-r $filename && Plugins::Spotify::Library->restore($filename)) {
-
-						$log->info("library restore from $filename");
-
-						$params->{'warning'} = sprintf(string("PLUGIN_SPOTIFY_RESTORED"), $filename);
-
-					} else {
-
-						$log->info("failed to restore from $filename");
-
-						$params->{'warning'} = sprintf(string("PLUGIN_SPOTIFY_RESTORE_FAILED"), $filename);
-					}
-				}
-
-				delete $params->{'backup'}; 
-				delete $params->{'restore'};
-				delete $params->{'saveSettings'};
-			}
-
 		} else {
 
 			if (
@@ -145,7 +80,7 @@ sub handler {
 				($params->{'loglevel'} ne $prefs->get('loglevel')) ||
 				(($params->{'volnorm'} ? 1 : 0) ne $prefs->get('volnorm')) ||
 				(($params->{'nocache'} ? 1 : 0) ne $prefs->get('nocache'))
-			   ) {
+			) {
 
 				$log->debug("username changed") if $params->{'username'} ne $prefs->get('username');
 				$log->debug("bitrate changed") if $params->{'bitrate'}  ne $prefs->get('bitrate');
@@ -171,20 +106,9 @@ sub handler {
 				return undef;
 			}
 
-			for my $param(qw(location maxtracks maxsearch lastfmuser radio_genres)) {
-				if ($params->{ $param } ne $prefs->get( $param )) {
-					$prefs->set($param, $params->{ $param });
-					if ($param eq 'maxtracks') {
-						Plugins::Spotify::Plugin->setMaxTracks;
-					}
-				}
-			}
-
-			for my $param(qw(nootherstreaming othermeta is_app lastfm)) {
-				my $val = $params->{ $param } ? 1 : 0;
-				if ($val ne $prefs->get( $param )) {
-					$prefs->set($param, $val);
-				}
+			my $val = $params->{nootherstreaming} ? 1 : 0;
+			if ($val ne $prefs->get('nootherstreaming')) {
+				$prefs->set('nootherstreaming', $val);
 			}
 		}
 	}
@@ -209,20 +133,10 @@ sub handler {
 	$params->{'jsver'}        = $jsver;
 	$params->{'password'}     = '';
 
-	for my $param(qw(username bitrate httpport loglevel location maxtracks maxsearch agree nootherstreaming othermeta
-				     lastfm lastfmuser volnorm is_app nocache radio_genres)) {
+	for my $param(qw(username bitrate httpport loglevel agree nootherstreaming
+				     volnorm nocache)) {
 		$params->{ $param } = $prefs->get($param);
 	}
-
-	$params->{'show_app'} = Slim::Plugin::Base->can('nonSNApps') ? 1 : 0;
-
-	eval {
-		my %locations = ('' => '');
-		for my $code (Locale::Country::all_country_codes()) {
-			$locations{Locale::Country::code2country($code)} = uc $code;
-		}
-		$params->{'locations'} = \%locations;
-	};
 
 	if ($params->{'running'} || $restarting) {
 

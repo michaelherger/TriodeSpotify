@@ -2,8 +2,6 @@
 <script type="text/javascript" src="/plugins/Spotify/html/selftest.js?r=[% jsver %]"></script>
 [% END %]
 
-[% IF backup or restore; warning = ''; hide_banner = 1; END %]
-
 [% PROCESS settings/header.html %]
 
 	[% IF not hide_banner %]
@@ -25,28 +23,6 @@
 		[% END %]
 		[% WRAPPER setting %]
 			[% "PLUGIN_SPOTIFY_EULA_TEXT4" | string %]
-		[% END %]
-
-	[% ELSIF backup %]
-
-		[% WRAPPER setting title="PLUGIN_SPOTIFY_BACKUP_DETAIL" desc="PLUGIN_SPOTIFY_BACKUP_DESC" %]
-			<form name="backuplib" method="get" action="[% webroot %]plugins/Spotify/settings/basic.html">
-				<input id="backuplibname" type="text" class="stdedit selectFile selectFile_json" name="filename" value="" size="40">
-				<input type="submit" class="stdclick" name="backup" value="[% 'PLUGIN_SPOTIFY_BACKUP' | string %]">
-				<input type="submit" class="stdclick" name="cancel" value="[% 'PLUGIN_SPOTIFY_CANCEL' | string %]">
-				<input type="hidden" name="backup_page" value="true" />
-			</form>
-		[% END %]
-
-	[% ELSIF restore %]
-
-		[% WRAPPER setting title="PLUGIN_SPOTIFY_RESTORE_DETAIL" desc="PLUGIN_SPOTIFY_RESTORE_DESC" %]
-			<form name="restorelib" method="get" action="[% webroot %]plugins/Spotify/settings/basic.html">
-				<input id="restorelibname" type="text" class="stdedit selectFile selectFile_json" name="filename" value="" size="40">
-				<input type="submit" class="stdclick" name="restore" value="[% 'PLUGIN_SPOTIFY_RESTORE' | string %]">
-				<input type="submit" class="stdclick" name="cancel" value="[% 'PLUGIN_SPOTIFY_CANCEL' | string %]">
-				<input type="hidden" name="restore_page" value="true" />
-			</form>
 		[% END %]
 
 	[% ELSE %]	
@@ -77,62 +53,16 @@
 		<input type="checkbox" name="nocache" [% IF nocache %] checked [% END %]>
 	[% END %]
 
-	[% IF show_app %]
-		[% WRAPPER setting title="PLUGIN_SPOTIFY_APP" desc="PLUGIN_SPOTIFY_APP_DESC" %]
-			<input type="checkbox" name="is_app"  [% IF is_app %] checked [% END %]>
-		[% END %]
-	[% END %]
-
 	[% IF otherhandler %]
 
 		[% WRAPPER setting title="PLUGIN_SPOTIFY_NO_OTHER_STREAMING" desc="PLUGIN_SPOTIFY_NO_OTHER_STREAMING_DESC" %]
 			<input type="checkbox" name="nootherstreaming" [% IF nootherstreaming %] checked [% END %]>
 		[% END %]
 
-		[% WRAPPER setting title="PLUGIN_SPOTIFY_OTHER_META" desc="PLUGIN_SPOTIFY_OTHER_META_DESC" %]
-			<input type="checkbox" name="othermeta" [% IF othermeta %] checked [% END %]>
-		[% END %]
-
-	[% END %]
-
-	[% WRAPPER setting title="PLUGIN_SPOTIFY_LASTFM" desc="PLUGIN_SPOTIFY_LASTFM_DESC" %]
-		<input type="checkbox" name="lastfm" [% IF lastfm %] checked [% END %]>
-	[% END %]
-
-	[% WRAPPER setting title="PLUGIN_SPOTIFY_LASTFMUSER" desc="PLUGIN_SPOTIFY_LASTFMUSER_DESC" %]
-		<input type="text" class="stdedit" name="lastfmuser" id="lastfmuser" value="[% lastfmuser %]" size="40">
 	[% END %]
 
 	[% WRAPPER setting title="PLUGIN_SPOTIFY_PORT" desc="PLUGIN_SPOTIFY_PORT_DESC" %]
 		<input type="text" class="stdedit" name="httpport" id="httpport" value="[% httpport %]" size="40">
-	[% END %]
-
-	[% WRAPPER setting title="PLUGIN_SPOTIFY_MAXTRACKS" desc="PLUGIN_SPOTIFY_MAXTRACKS_DESC" %]
-		<input type="text" class="stdedit" name="maxtracks" id="maxtracks" value="[% maxtracks %]" size="40">
-	[% END %]
-
-	[% WRAPPER setting title="PLUGIN_SPOTIFY_MAXSEARCH" desc="PLUGIN_SPOTIFY_MAXSEARCH_DESC" %]
-		<input type="text" class="stdedit" name="maxsearch" id="maxsearch" value="[% maxsearch %]" size="40">
-	[% END %]
-
-	[% WRAPPER setting title="PLUGIN_SPOTIFY_LOCATION" desc="PLUGIN_SPOTIFY_LOCATION_DESC" %]
-		[% IF locations %]
-			<select class="stdedit" name="location" id="location">
-			[% FOREACH value = locations.keys.sort %]
-				<option [% IF locations.$value == location %]selected[% END %] value="[% locations.$value %]">[% value %]</option>
-			[% END %]
-			</select>
-		[% ELSE %]
-			<input type="text" class="stdedit" name="location" id="location" value="[% location %]" size="40">
-		[% END %]
-	[% END %]
-
-	[% WRAPPER setting title="PLUGIN_SPOTIFY_RADIOGENRES" desc="PLUGIN_SPOTIFY_RADIOGENRES_DESC" %]
-		<select class="stdedit" name="radio_genres" id="radio_genres">
-		[% FOREACH value = [ "10" "20" "50" "100" "200" "300" ] %]
-			<option [% IF value == radio_genres %]selected[% END %] value="[% value %]">[% value %]</option>
-		[% END %]
-		</select>
 	[% END %]
 
 	[% WRAPPER setting title="PLUGIN_SPOTIFY_LOG" desc="PLUGIN_SPOTIFY_LOG_DESC" %]
@@ -147,11 +77,6 @@
 	[% WRAPPER setting title="PLUGIN_SPOTIFY_HELPERNAME" desc="PLUGIN_SPOTIFY_HELPERNAME_DESC" %]
 		<div>[% helpername %]</div>
 	[% END %]	
-
-	[% WRAPPER setting title="PLUGIN_SPOTIFY_LIBRARY_BACKUP" desc="PLUGIN_SPOTIFY_LIBRARY_DESC" %]
-		<input type="submit" style="display: inline;" class="stdclick" name="backup" value=[% "PLUGIN_SPOTIFY_BACKUP" | string %]>
-		<input type="submit" style="display: inline;" class="stdclick" name="restore" value=[% "PLUGIN_SPOTIFY_RESTORE" | string %]>
-	[% END %]
 
 	[% WRAPPER setting title="PLUGIN_SPOTIFY_TEST" desc="PLUGIN_SPOTIFY_TEST_DESC" %]
 		<div id="test"></div>
@@ -187,15 +112,6 @@
 		<div>[% "PLUGIN_SPOTIFY_STREAM" | string %][% "COLON" | string %] [% status.stream %]</div>
 		<div>[% "PLUGIN_SPOTIFY_PREFETCH" | string %][% "COLON" | string %] [% status.prefetch %]</div>
 		<div>[% "PLUGIN_SPOTIFY_RELOGIN" | string %][% "COLON" | string %] [% status.relogin %]</div>
-		<div>[% "PLUGIN_SPOTIFY_BROWSEARTIST" | string %][% "COLON" | string %] [% status.browse_artist %]</div>
-		<div>[% "PLUGIN_SPOTIFY_BROWSEALBUM" | string %][% "COLON" | string %] [% status.browse_album %]</div>
-		<div>[% "PLUGIN_SPOTIFY_BROWSETRACK" | string %][% "COLON" | string %] [% status.browse_track %]</div>
-		<div>[% "PLUGIN_SPOTIFY_COVER" | string %][% "COLON" | string %] [% status.cover %]</div>
-		<div>[% "PLUGIN_SPOTIFY_SEARCH" | string %][% "COLON" | string %] [% status.search %]</div>
-		<div>[% "PLUGIN_SPOTIFY_TOPLIST" | string %][% "COLON" | string %] [% status.toplist %]</div>
-		<div>[% "PLUGIN_SPOTIFY_PLAYLIST" | string %][% "COLON" | string %] [% status.playlist %]</div>
-		<div>[% "PLUGIN_SPOTIFY_PLAYLISTEDIT" | string %][% "COLON" | string %] [% status.playlist_edit %]</div>
-		<div>[% "PLUGIN_SPOTIFY_STAR" | string %][% "COLON" | string %] [% status.star %]</div>
 		<div>[% "PLUGIN_SPOTIFY_RATELIMIT" | string %][% "COLON" | string %] [% status.rate_limit %]</div>
 
 	[% END %]
