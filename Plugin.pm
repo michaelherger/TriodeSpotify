@@ -13,7 +13,6 @@ use JSON::XS::VersionOneAndTwo;
 use File::Spec::Functions;
 
 use Slim::Utils::Log;
-use Slim::Utils::Prefs;
 
 use Slim::Utils::Strings qw(string cstring);
 
@@ -26,9 +25,6 @@ my $log = Slim::Utils::Log->addLogCategory({
 	'defaultLevel' => 'WARN',
 	'description'  => string('PLUGIN_SPOTIFY'),
 }); 
-
-my $prefs  = preferences('plugin.spotify');
-my $sprefs = preferences('server');
 
 sub initPlugin {
 	my $class = shift;
@@ -61,9 +57,6 @@ sub initPlugin {
 
 sub postinitPlugin {
 	require Plugins::Spotify::ProtocolHandler;
-
-	# add here to replace any existing entry
-	Slim::Control::Request::addDispatch(['spotify', 'star', '_uri', '_val'], [1, 0, 0, \&cliStar]);
 }
 
 sub shutdownPlugin {
@@ -73,28 +66,5 @@ sub shutdownPlugin {
 sub playerMenu {}
 
 sub getDisplayName { 'PLUGIN_SPOTIFY' }
-
-sub cliStar {
-	my $request = shift;
- 
-	my $client = $request->client;
-	my $uri = $request->getParam('_uri');
-	my $val = $request->getParam('_val');
-
-	$uri =~ s{^spotify://}{spotify:};
-	$val = 0 if !defined $val;
-
-	# don't process from web interface as its still a shuffle button
-	if ($request->source ne 'JSONRPC') {
-
-		$log->info("setting starred value for $uri to $val");
-		
-		Plugins::Spotify::Spotifyd->get("$uri/star.json?s=$val", sub {}, sub {});
-		
-		Plugins::Spotify::ProtocolHandler->getMetadataFor($client, $uri, undef, 1);
-	}
-																
-	$request->setStatusDone;
-}
 
 1;

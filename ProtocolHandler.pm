@@ -2,10 +2,6 @@ package Plugins::Spotify::ProtocolHandler;
 
 use strict;
 
-use Scalar::Util qw(blessed);
-use JSON::XS::VersionOneAndTwo;
-use Scalar::Util qw(blessed);
-
 use vars qw(@ISA);
 
 use Slim::Utils::Log;
@@ -15,14 +11,7 @@ use Slim::Utils::Strings qw(string);
 use Plugins::Spotify::Image;
 
 my $prefs = preferences('plugin.spotify');
-my $sprefs= preferences('server');
 my $log;
-
-use constant MAX_TRACK_REQUEST => 5; # max outstanding track requests before queuing
-
-my %fetching; # hash of track urls we are fetching, to avoid multiple fetches
-my @fetchQ;   # Q of tracks to fetch
-my $fetchInProgress = 0;
 
 my $otherHandler;
 

@@ -9,7 +9,6 @@ use Scalar::Util qw(blessed);
 
 use Slim::Utils::Log;
 use Slim::Utils::Prefs;
-use Slim::Utils::Strings qw(string);
 
 use constant PREFETCH_TIME => 30; # prefetch next track 30 secs before end of current track
 
@@ -17,8 +16,8 @@ my $id = 0; # unique id for track being played
 
 my $prefetch; # timer for prefetch of next track
 
-my $prefs = preferences('plugin.spotify');
-my $log   = logger('plugin.spotify');
+my $sprefs = preferences('server');
+my $log = logger('plugin.spotify');
 
 sub bufferThreshold { 80 }
 
@@ -80,7 +79,7 @@ sub requestString {
 
 	my $requestString = "GET $path SPOTSTREAM/1.0" . $CRLF;
 
-	if (preferences('server')->get('authorize')) {
+	if ($sprefs->get('authorize')) {
 
 		$client->password(Slim::Player::Squeezebox::generate_random_string(20));
 				
