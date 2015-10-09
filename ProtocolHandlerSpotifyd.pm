@@ -1,4 +1,4 @@
-package Plugins::Spotify::ProtocolHandlerSpotifyd;
+package Plugins::SpotifyProtocolHandler::ProtocolHandlerSpotifyd;
 
 use strict;
 
@@ -17,13 +17,14 @@ my $id = 0; # unique id for track being played
 my $prefetch; # timer for prefetch of next track
 
 my $sprefs = preferences('server');
-my $log = logger('plugin.spotify');
+my $log = logger('plugin.spotifyprotocolhandler');
 
 sub bufferThreshold { 80 }
 
+# XXX - is this ever being used?
 sub getMetadataFor {
 	my $class = shift;
-	Plugin::Spotify::ProtocolHandler->getMetadataFor(@_);
+	Plugins::SpotifyProtocolHandler::ProtocolHandler->getMetadataFor(@_);
 }
 
 sub requestString {
@@ -119,7 +120,7 @@ sub prefetchNext {
 		$prefetch = Slim::Utils::Timers::setTimer(__PACKAGE__, time() + $prefetchIn, 
 			sub {
 				$log->info("prefetching: $uri");
-				Plugins::Spotify::Spotifyd->get("$uri/prefetch.json", sub {}, sub {});
+				Plugins::SpotifyProtocolHandler::Spotifyd->get("$uri/prefetch.json", sub {}, sub {});
 				$prefetch = undef;
 			}
 		);

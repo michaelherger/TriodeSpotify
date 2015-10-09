@@ -1,4 +1,4 @@
-package Plugins::Spotify::Settings;
+package Plugins::SpotifyProtocolHandler::Settings;
 
 use strict;
 use base qw(Slim::Web::Settings);
@@ -11,10 +11,10 @@ use Slim::Utils::Prefs;
 use Slim::Utils::Log;
 use Slim::Utils::Strings qw(string);
 
-use Plugins::Spotify::Spotifyd;
+use Plugins::SpotifyProtocolHandler::Spotifyd;
 
 my $prefs = preferences('plugin.spotify');
-my $log   = logger('plugin.spotify');
+my $log   = logger('plugin.spotifyprotocolhandler');
 my $jsver;
 
 $prefs->init({ username => 'username', 
@@ -48,16 +48,16 @@ $prefs->migrate(5, sub {
 });
 
 sub new {
-	$jsver = Plugins::Spotify::Plugin->_pluginDataFor('version') || int(rand(1000000));
+	$jsver = Plugins::SpotifyProtocolHandler::Plugin->_pluginDataFor('version') || int(rand(1000000));
 	return shift->SUPER::new(@_);
 }
 
 sub name {
-	return Slim::Web::HTTP::CSRF->protectName('PLUGIN_SPOTIFY');
+	return Slim::Web::HTTP::CSRF->protectName('PLUGIN_SPOTIFY_PROTOCOLHANDLER');
 }
 
 sub page {
-	return Slim::Web::HTTP::CSRF->protectURI('plugins/Spotify/settings/basic.html');
+	return Slim::Web::HTTP::CSRF->protectURI('plugins/SpotifyProtocolHandler/settings/basic.html');
 }
 
 sub handler {
@@ -95,7 +95,7 @@ sub handler {
 				$prefs->set('volnorm',  $params->{'volnorm'} ? 1 : 0);
 				$prefs->set('nocache',  $params->{'nocache'} ? 1 : 0);
 				
-				Plugins::Spotify::Spotifyd->restartD;
+				Plugins::SpotifyProtocolHandler::Spotifyd->restartD;
 				
 				$restarting = 1;
 			}
@@ -113,7 +113,7 @@ sub handler {
 		}
 	}
 
-	$params->{'running'} = Plugins::Spotify::Spotifyd->alive;
+	$params->{'running'} = Plugins::SpotifyProtocolHandler::Spotifyd->alive;
 
 	if (!$params->{'running'}) {
 
@@ -126,10 +126,10 @@ sub handler {
 		}
 	}
 
-	$params->{'otherhandler'} = Plugins::Spotify::ProtocolHandler->otherHandler;
-	$params->{'spotifyduri'}  = Plugins::Spotify::Spotifyd->uri;
+	$params->{'otherhandler'} = Plugins::SpotifyProtocolHandler::ProtocolHandler->otherHandler;
+	$params->{'spotifyduri'}  = Plugins::SpotifyProtocolHandler::Spotifyd->uri;
 	$params->{'show_volnorm'} = Slim::Utils::OSDetect->details->{'binArch'} ne 'arm-linux';
-	$params->{'helpername'}   = Plugins::Spotify::Spotifyd->helperName;
+	$params->{'helpername'}   = Plugins::SpotifyProtocolHandler::Spotifyd->helperName;
 	$params->{'jsver'}        = $jsver;
 	$params->{'password'}     = '';
 
@@ -143,7 +143,7 @@ sub handler {
 		my $try;
 		my $retry = 5;
 		my $tnow  = Time::HiRes::time();
-		my $statusUrl = Plugins::Spotify::Spotifyd->uri("status.json") . ($restarting ? "?login" : "");
+		my $statusUrl = Plugins::SpotifyProtocolHandler::Spotifyd->uri("status.json") . ($restarting ? "?login" : "");
 
 		$try = sub {
 
@@ -189,7 +189,7 @@ sub setPassword {
 
 	$cb ||= sub {};
 
-	my $url = Plugins::Spotify::Spotifyd->uri("setpassword?pw=" . (!$encoded ? pwEncode($password) : $password));
+	my $url = Plugins::SpotifyProtocolHandler::Spotifyd->uri("setpassword?pw=" . (!$encoded ? pwEncode($password) : $password));
 	my $retry = 3;
 	my $try;
 	

@@ -1,4 +1,4 @@
-package Plugins::Spotify::ProtocolHandler;
+package Plugins::SpotifyProtocolHandler::ProtocolHandler;
 
 use strict;
 
@@ -14,7 +14,7 @@ my $log;
 my $otherHandler;
 
 BEGIN {
-	$log = logger('plugin.spotify');
+	$log = logger('plugin.spotifyprotocolhandler');
 
 	$otherHandler = Slim::Player::ProtocolHandlers->handlerForProtocol('spotify');
 
@@ -23,7 +23,7 @@ BEGIN {
 	push @ISA, ($otherHandler || 'Slim::Formats::RemoteStream');
 	
 	Slim::Player::ProtocolHandlers->registerHandler(spotify  => __PACKAGE__);
-	Slim::Player::ProtocolHandlers->registerHandler(spotifyd => 'Plugins::Spotify::ProtocolHandlerSpotifyd');
+	Slim::Player::ProtocolHandlers->registerHandler(spotifyd => 'Plugins::SpotifyProtocolHandler::ProtocolHandlerSpotifyd');
 }
 
 sub _useOtherStreaming {
@@ -49,7 +49,7 @@ sub new {
 
 	$log->warn("Spotify client not supported: " . $client->model);
 
-	$client->showBriefly({ line => [ string('PLUGIN_SPOTIFY'), string('PLUGIN_SPOTIFY_PLAYER_NOT_SUPPORTED') ] }, 
+	$client->showBriefly({ line => [ string('PLUGIN_SPOTIFY_PROTOCOLHANDLER'), string('PLUGIN_SPOTIFY_PLAYER_NOT_SUPPORTED') ] }, 
 						 { block => 1, duration => 5 });
 
 	return undef;
@@ -210,7 +210,7 @@ sub handleDirectError {
 		$log->warn("Please check your firewall to ensure spotifyd.exe/spotifyd is able to accept incomming connections");
 		
 		# note this blocks the server, try to get the error message out first...
-		Slim::Utils::Timers::setTimer(undef, Time::HiRes::time() + 1.0, sub { Plugins::Spotify::Spotifyd->restartD });
+		Slim::Utils::Timers::setTimer(undef, Time::HiRes::time() + 1.0, sub { Plugins::SpotifyProtocolHandler::Spotifyd->restartD });
 	}
 }
 
@@ -225,11 +225,11 @@ sub suppressPlayersMessage {
 
 		$song->pluginData()->{'rebuffer'} ||= 0;
 
-		if ($song->pluginData()->{'rebuffer'}++ > 15 && Time::HiRes::time() - Plugins::Spotify::Spotifyd->reloginTime > 15) {
+		if ($song->pluginData()->{'rebuffer'}++ > 15 && Time::HiRes::time() - Plugins::SpotifyProtocolHandler::Spotifyd->reloginTime > 15) {
 
 			$log->info("buffer threshold exceeded");
 
-			Plugins::Spotify::Spotifyd->relogin;
+			Plugins::SpotifyProtocolHandler::Spotifyd->relogin;
 
 			$song->pluginData()->{'rebuffer'} = 0;
 		}

@@ -1,9 +1,9 @@
-PLUGIN_SPOTIFY
-	EN	Spotify
+PLUGIN_SPOTIFY_PROTOCOLHANDLER
+	EN	Spotify Protocol Handler
 
-PLUGIN_SPOTIFY_DESC
-	DE	Spotify Plugin eines Drittanbieters. Höre Spotify Musik auf deiner Squeezebox Classic, Boom, Duet, Transporter, Radio oder Touche. Benötigt einen Spotify Premium Account.
-	EN	Third party Spotify plugin.  Listen to Spotify on your Squeezebox Classic, Boom, Duet, Transporter, Radio or Touch.  Requires a Spotify Premium account.
+PLUGIN_SPOTIFY_PROTOCOLHANDLER_DESC
+	DE	Spotify Protocol Handler Plugin eines Drittanbieters. Höre Spotify Musik auf deiner Squeezebox Classic, Boom, Duet, Transporter, Radio oder Touch unter Verwendung des offiziellen Squeezebox Spotify Plugins. Benötigt einen Spotify Premium Account.
+	EN	Third party Spotify Protocol Handler plugin.  Listen to Spotify on your Squeezebox Classic, Boom, Duet, Transporter, Radio or Touch using the official Squeezebox Spotify plugin.  Requires a Spotify Premium account.
 
 PLUGIN_SPOTIFY_BANNER
 	DE	Spotify Hinweis

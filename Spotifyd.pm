@@ -1,4 +1,4 @@
-package Plugins::Spotify::Spotifyd;
+package Plugins::SpotifyProtocolHandler::Spotifyd;
 
 use strict;
 
@@ -13,7 +13,7 @@ use Slim::Utils::Log;
 use Slim::Utils::Prefs;
 
 my $prefs = preferences('plugin.spotify');
-my $log   = logger('plugin.spotify');
+my $log   = logger('plugin.spotifyprotocolhandler');
 
 my $spotifyd;
 my $helperName;      # location of current helper (pre win32 filename shortening)
