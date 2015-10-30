@@ -4,7 +4,7 @@
 	<name>PLUGIN_SPOTIFY_PROTOCOLHANDLER</name>
 	<id>4bf0a90f-6330-4eb4-8315-a8361eb853db</id>
 	<module>Plugins::SpotifyProtocolHandler::Plugin</module>
-	<version>3.0.0</version>
+	<version>0.9.0</version>
 	<defaultState>enabled</defaultState>
 	<description>PLUGIN_SPOTIFY_PROTOCOLHANDLER_DESC</description>
 	<creator>Triode, Michael Herger</creator>

@@ -32,7 +32,7 @@ sub postinitPlugin {
 		require Plugins::SpotifyProtocolHandler::Settings;
 		require Plugins::SpotifyProtocolHandler::Spotifyd;
 
-		if ( !Slim::Player::ProtocolHandlers->handlerForProtocol('spotify') ) {
+		if ( !$INC{'Slim/Plugin/SpotifyLogi/Plugin.pm'} ) {
 			$log->error("The official Logitech Squeezebox Spotify plugin should be enabled, or some functionality might be limited.");
 		}
 
@@ -58,6 +58,10 @@ sub postinitPlugin {
 		Plugins::SpotifyProtocolHandler::Spotifyd->startD;
 	
 		Slim::Web::Pages->addPageFunction("^spotifyd.log", \&Plugins::SpotifyProtocolHandler::Spotifyd::logHandler);
+		
+		# hack to get menu for ip3k players - it's being hidden by default
+		Slim::Buttons::Common::addMode($class->modeName, $class->getFunctions, sub { $class->setMode(@_) });
+		$class->addNonSNApp();
 
 		require Plugins::SpotifyProtocolHandler::ProtocolHandler;
 	}
@@ -71,6 +75,33 @@ sub shutdownPlugin {
 
 sub playerMenu {}
 
-sub getDisplayName { 'PLUGIN_SPOTIFY_PROTOCOLHANDLER' }
+sub getDisplayName { 'SPOTIFY' }
+
+sub setMode {
+	my ( $class, $client, $method ) = @_;
+
+	if ($method eq 'pop') {
+
+		Slim::Buttons::Common::popMode($client);
+		return;
+	}
+
+	my $name = $class->getDisplayName();
+	
+	my $title = (uc($name) eq $name) ? $client->string( $name ) : $name;
+	
+	my %params = (
+		header   => $name,
+		modeName => $name,
+		url      => Slim::Networking::SqueezeNetwork->url('/api/spotify/v1/opml'),
+		title    => $title,
+		timeout  => 35,
+	);
+
+	Slim::Buttons::Common::pushMode( $client, 'xmlbrowser', \%params );
+	
+	# we'll handle the push in a callback
+	$client->modeParam( handledTransition => 1 );
+}
 
 1;
