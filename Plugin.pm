@@ -60,8 +60,10 @@ sub postinitPlugin {
 		Slim::Web::Pages->addPageFunction("^spotifyd.log", \&Plugins::SpotifyProtocolHandler::Spotifyd::logHandler);
 		
 		# hack to get menu for ip3k players - it's being hidden by default
-		Slim::Buttons::Common::addMode($class->modeName, $class->getFunctions, sub { $class->setMode(@_) });
-		$class->addNonSNApp();
+		if (Slim::Utils::Versions->compareVersions($::VERSION, 7.8) >= 0) {
+			Slim::Buttons::Common::addMode($class->modeName, $class->getFunctions, sub { $class->setMode(@_) });
+			$class->addNonSNApp();
+		}
 
 		require Plugins::SpotifyProtocolHandler::ProtocolHandler;
 	}
@@ -74,6 +76,8 @@ sub shutdownPlugin {
 }
 
 sub playerMenu {}
+
+sub menu { Slim::Utils::Versions->compareVersions($::VERSION, 7.8) < 0 ? 'apps' : undef }
 
 sub getDisplayName { 'SPOTIFY' }
 
