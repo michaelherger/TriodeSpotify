@@ -1,7 +1,3 @@
-[% pageHeaderScriptsDISABLED = BLOCK %]
-<script type="text/javascript" src="/plugins/SpotifyProtocolHandler/html/selftest.js?r=[% jsver %]"></script>
-[% END %]
-
 [% PROCESS settings/header.html %]
 
 	[% IF not hide_banner %]
@@ -77,11 +73,6 @@
 	[% WRAPPER setting title="PLUGIN_SPOTIFY_HELPERNAME" desc="PLUGIN_SPOTIFY_HELPERNAME_DESC" %]
 		<div>[% helpername %]</div>
 	[% END %]	
-
-<!-- 	[% WRAPPER setting title="PLUGIN_SPOTIFY_TEST" desc="PLUGIN_SPOTIFY_TEST_DESC" %]
-		<div id="test"></div>
-		<div id="button"><button type="button" onclick="startSelfTest('[% spotifyduri %]', '[% player %]')">[% "PLUGIN_SPOTIFY_START" | string %]</button></div>
-	[% END %] -->
 
 	[% WRAPPER setting title="PLUGIN_SPOTIFY_STATUS" sectionID="helperapp" %]
 		

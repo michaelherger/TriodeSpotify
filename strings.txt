@@ -213,18 +213,6 @@ PLUGIN_SPOTIFY_NOCACHE_DESC
 
 # Version 2 plugin
 
-PLUGIN_SPOTIFY_TEST
-	DE	Selbsttest
-	EN	Self Test
-
-PLUGIN_SPOTIFY_TEST_DESC
-	DE	Automatisierte Tests der Funktionalität dieses Plugins. Klicke und lass das Browser-Fenster für ca. 5 Minuten offen, um die Tests durchzuführen. Beachte, dass als Teil der Tests das Plugin einen zufälligen Track durch deinen Player wiedergeben wird.
-	EN	Automated tests to check the operation of the plugin.  Click start and leave the browser window open for around 5 minutes to perform tests.  Note as part of the tests the plugin will play a random track through your selected player.
-
-PLUGIN_SPOTIFY_START
-	DE	Test starten
-	EN	Start Test
-
 PLUGIN_SPOTIFY_HELPERNAME
 	DE	Helfer-Anwendung Speicherort
 	EN	Helper App Location
