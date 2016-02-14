@@ -1,4 +1,4 @@
-[% pageHeaderScripts = BLOCK %]
+[% pageHeaderScriptsDISABLED = BLOCK %]
 <script type="text/javascript" src="/plugins/SpotifyProtocolHandler/html/selftest.js?r=[% jsver %]"></script>
 [% END %]
 
@@ -78,10 +78,10 @@
 		<div>[% helpername %]</div>
 	[% END %]	
 
-	[% WRAPPER setting title="PLUGIN_SPOTIFY_TEST" desc="PLUGIN_SPOTIFY_TEST_DESC" %]
+<!-- 	[% WRAPPER setting title="PLUGIN_SPOTIFY_TEST" desc="PLUGIN_SPOTIFY_TEST_DESC" %]
 		<div id="test"></div>
 		<div id="button"><button type="button" onclick="startSelfTest('[% spotifyduri %]', '[% player %]')">[% "PLUGIN_SPOTIFY_START" | string %]</button></div>
-	[% END %]
+	[% END %] -->
 
 	[% WRAPPER setting title="PLUGIN_SPOTIFY_STATUS" sectionID="helperapp" %]
 		
