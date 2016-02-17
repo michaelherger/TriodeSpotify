@@ -19,14 +19,12 @@ my $spotifyd;
 my $helperName;      # location of current helper (pre win32 filename shortening)
 my $runningHelper;   # specfic helper which is running
 my $spotifydChecker; # timer to test liveness of spotifyd
-my $errorCount;      # count of errors against this instance
 my $reloginTime;     # time of last relogin
 
 sub startD {
 	my $class = shift;
 	my $specific = shift;
 
-	$errorCount = 0;
 	$reloginTime = 0;
 
 	my @helpers;
@@ -218,22 +216,28 @@ sub relogin {
 
 	$log->warn("requesting relogin");
 
-	Slim::Networking::SimpleAsyncHTTP->new(sub {}, sub {})->get($class->uri("relogin"));
+	Slim::Networking::SimpleAsyncHTTP->new(sub {}, sub {
+		my $body;
+		
+		if ( my $file = File::ReadBackwards->new(logFile()) ) {
+			# get the last three lines from the log file
+			my $count = 3;
+			while ( --$count && (my $line = $file->readline()) ) {
+				$body = $line . $body;
+			}
+			
+			$body = "\n...\n$body";
+	
+			$file->close();			
+		};
 
-	$errorCount = 0;
+		$log->error('Login failed - please check your Spotify credentials in LMS. Famous last words from spotifyd:' . $body);
+	})->get($class->uri("relogin"));
 
 	$reloginTime = Time::HiRes::time();
 }
 
 sub reloginTime { $reloginTime }
-
-sub countError {
-	my $class = shift;
-
-	if (++$errorCount > 5) {
-		$class->relogin;
-	}
-}
 
 sub uri {
 	my $class = shift;
@@ -299,6 +303,12 @@ sub get {
 		},
 
 		sub { 
+			# We'd get the following error if the helper was running, but invalid credentials:
+			# "Error reading headers: Server closed connection without sending any data back"
+			if ( $_[1] =~ /Server closed connection/i && Time::HiRes::time() - $class->reloginTime > 15 ) {
+				$class->relogin();
+			}
+			
 			$log->warn($_[1]);
 			$ecb->($_[1])
 		},
