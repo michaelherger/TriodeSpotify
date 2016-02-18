@@ -8,7 +8,6 @@ package Plugins::SpotifyProtocolHandler::Plugin;
 # The plugin relies on a separate binary spotifyd which is linked to libspotify
 
 use strict;
-use base 'Slim::Plugin::Base';
 
 use File::Spec::Functions;
 
@@ -36,17 +35,17 @@ sub postinitPlugin {
 			$log->error("The official Logitech Squeezebox Spotify plugin should be enabled, or some functionality might be limited.");
 		}
 
-		# hack for Synology archnames meaning binary dirs don't get put on findBin path
 		my $arch = Slim::Utils::OSDetect->details->{'binArch'};
+
+		# hack for Synology archnames meaning binary dirs don't get put on findBin path
 		if ($arch =~ /^MARVELL/) {
 			Slim::Utils::Misc::addFindBinPaths(catdir( $class->_pluginDataFor('basedir'), 'Bin', 'arm-linux' ));
 		}
-		if ($arch =~ /X86|CEDARVIEW|EVANSPORT/) {
+		elsif ($arch =~ /X86|CEDARVIEW|EVANSPORT/) {
 			Slim::Utils::Misc::addFindBinPaths(catdir( $class->_pluginDataFor('basedir'), 'Bin', 'i386-linux' ));
 		}
-	
 		# freebsd - try adding i386-linux which may work if linux compatibility is installed
-		if ($^O =~ /freebsd/ && Slim::Utils::OSDetect->details->{'binArch'} =~ /i386|amd64/) {
+		elsif ($^O =~ /freebsd/ && $arch =~ /i386|amd64/) {
 			Slim::Utils::Misc::addFindBinPaths(catdir( $class->_pluginDataFor('basedir'), 'Bin', 'i386-linux' ));
 		}
 	
@@ -58,12 +57,6 @@ sub postinitPlugin {
 		Plugins::SpotifyProtocolHandler::Spotifyd->startD;
 	
 		Slim::Web::Pages->addPageFunction("^spotifyd.log", \&Plugins::SpotifyProtocolHandler::Spotifyd::logHandler);
-		
-		# hack to get menu for ip3k players - it's being hidden by default
-		if (Slim::Utils::Versions->compareVersions($::VERSION, 7.8) >= 0) {
-			Slim::Buttons::Common::addMode($class->modeName, $class->getFunctions, sub { $class->setMode(@_) });
-			$class->addNonSNApp();
-		}
 
 		require Plugins::SpotifyProtocolHandler::ProtocolHandler;
 	}
@@ -75,37 +68,6 @@ sub shutdownPlugin {
 	}
 }
 
-sub playerMenu {}
-
-sub menu { Slim::Utils::Versions->compareVersions($::VERSION, 7.8) < 0 ? 'apps' : undef }
-
-sub getDisplayName { 'SPOTIFY' }
-
-sub setMode {
-	my ( $class, $client, $method ) = @_;
-
-	if ($method eq 'pop') {
-
-		Slim::Buttons::Common::popMode($client);
-		return;
-	}
-
-	my $name = $class->getDisplayName();
-	
-	my $title = (uc($name) eq $name) ? $client->string( $name ) : $name;
-	
-	my %params = (
-		header   => $name,
-		modeName => $name,
-		url      => Slim::Networking::SqueezeNetwork->url('/api/spotify/v1/opml'),
-		title    => $title,
-		timeout  => 35,
-	);
-
-	Slim::Buttons::Common::pushMode( $client, 'xmlbrowser', \%params );
-	
-	# we'll handle the push in a callback
-	$client->modeParam( handledTransition => 1 );
-}
+*_pluginDataFor = \&Slim::Plugin::Base::_pluginDataFor;
 
 1;
