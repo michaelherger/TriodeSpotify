@@ -9,7 +9,6 @@
 	<description>PLUGIN_SPOTIFY_PROTOCOLHANDLER_DESC</description>
 	<creator>Triode, Michael Herger</creator>
 	<email>triode1@btinternet.com</email>
-	<icon>plugins/SpotifyProtocolHandler/html/images/spotify.png</icon>
 	<optionsURL>plugins/SpotifyProtocolHandler/settings/basic.html</optionsURL>
 	<targetApplication>
 		<id>SlimServer</id>
