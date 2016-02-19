@@ -1,0 +1,6 @@
+SpotifyProtocolHandler/Bin/arm*
+SpotifyProtocolHandler/Bin/darwin*
+SpotifyProtocolHandler/Bin/i386*
+SpotifyProtocolHandler/Bin/MSWin32*
+SpotifyProtocolHandler/Bin/*.zip
+SpotifyProtocolHandler/Binaries*

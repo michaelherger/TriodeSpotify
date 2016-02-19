@@ -5,6 +5,7 @@
 	<id>4bf0a90f-6330-4eb4-8315-a8361eb853db</id>
 	<module>Plugins::SpotifyProtocolHandler::Plugin</module>
 	<version>1.0.3</version>
+	<spotifydversion>1.0.4</spotifydversion>
 	<defaultState>enabled</defaultState>
 	<description>PLUGIN_SPOTIFY_PROTOCOLHANDLER_DESC</description>
 	<creator>Triode, Michael Herger</creator>
@@ -15,4 +16,32 @@
 		<minVersion>7.6</minVersion>
 		<maxVersion>*</maxVersion>
 	</targetApplication>
+	
+	<!-- md5 checksums of the spotifyd helper files -->
+	<hashes>a86a767ba3cbc7960deea8a066d16d2d</hashes>
+	<hashes>adec8fbea22a9b964b14f1efbb269453</hashes>
+	<hashes>0e78e0bc9348ad77cff084b44a27ef6d</hashes>
+	<hashes>d9932243ea60dd19a7773ac8e51fc37b</hashes>
+	<hashes>73c1b37da7d384fb109151361e5d85d0</hashes>
+	<hashes>24d1cf3388a72a6ca67d21db201d00b3</hashes>
+	<hashes>74d6c4722827c212588096de7583e2a8</hashes>
+	<hashes>9786fa56cbb656213946732378e311ff</hashes>
+	<hashes>3e29adf4fe67f2a699679379895067e5</hashes>
+	<hashes>ebe39707e2eac6624e5427e3c8528699</hashes>
+	<hashes>22256d5014066e071b49bc21e4a3402c</hashes>
+	<hashes>53a1cd50935939cd55f205e6730d1e98</hashes>
+	<hashes>e17ca6643f17dc698288992264bda09f</hashes>
+	<hashes>b712f5901aff16b62c3f644d004084b9</hashes>
+	<hashes>9b8b76b72f15cb25187ff7a124deef8a</hashes>
+	<hashes>680c98fe962dc7abec8cd10234c78a05</hashes>
+	<hashes>ec0afac234285f8e013b93847b9c6168</hashes>
+	<hashes>48d1f7ce08b3b00766d9aa43e69c910f</hashes>
+	<hashes>08a38c5616cd8523d2264a763a38b441</hashes>
+	<hashes>a345030fb271679caaa51b06da530b49</hashes>
+	<hashes>f1c7ce4c3db53094148f5b5b895261f8</hashes>
+	<hashes>672961ff900b32d49f4dc79f9dcb7290</hashes>
+	<hashes>fa36e7c60c868f12172cb5b3601e70e7</hashes>
+	
+	<!-- master check sum -->
+	<shasum>1582feebf19057f3db84dcc722b751c37f9d9735</shasum>
 </extension>
