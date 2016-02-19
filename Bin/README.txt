@@ -1,1 +1,0 @@
-This folder should contain the binaries required to access the Spotify backend.

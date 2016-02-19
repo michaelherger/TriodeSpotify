@@ -4,7 +4,6 @@ use strict;
 use base qw(Slim::Web::Settings);
 
 use JSON::XS::VersionOneAndTwo;
-use File::Basename;
 use File::Spec::Functions qw(:ALL);
 
 use Slim::Utils::Prefs;

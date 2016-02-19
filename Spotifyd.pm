@@ -21,6 +21,43 @@ my $runningHelper;   # specfic helper which is running
 my $spotifydChecker; # timer to test liveness of spotifyd
 my $reloginTime;     # time of last relogin
 
+sub init {
+	my ( $class, $binFolder ) = @_;
+
+	my $arch = Slim::Utils::OSDetect->details->{'binArch'};
+
+	# hack for Synology archnames meaning binary dirs don't get put on findBin path
+	if ($arch =~ /^MARVELL/) {
+		Slim::Utils::Misc::addFindBinPaths(catdir( $binFolder, 'arm-linux' ));
+	}
+	elsif ($arch =~ /X86|CEDARVIEW|EVANSPORT/) {
+		Slim::Utils::Misc::addFindBinPaths(catdir( $binFolder, 'i386-linux' ));
+	}
+	# freebsd - try adding i386-linux which may work if linux compatibility is installed
+	elsif ($^O =~ /freebsd/ && $arch =~ /i386|amd64/) {
+		Slim::Utils::Misc::addFindBinPaths(catdir( $binFolder, 'i386-linux' ));
+	}
+	# we need to add the find path for all architectures, as they were not available when the plugin was loaded
+	else {
+		my @paths = ( catdir($binFolder, $arch), $binFolder );
+
+		if ( $arch =~ /i386-linux/i ) {
+ 			my $arch = $Config::Config{'archname'};
+ 			
+			if ( $arch && $arch =~ s/^x86_64-([^-]+).*/x86_64-$1/ ) {
+				unshift @paths, catdir($binFolder, $arch);
+			}
+		}
+		elsif ( $arch && $arch eq 'armhf-linux' ) {
+			push @paths, catdir($binFolder, 'arm-linux');
+		}
+
+		Slim::Utils::Misc::addFindBinPaths( @paths );
+	}
+
+	$class->startD;
+}
+
 sub startD {
 	my $class = shift;
 	my $specific = shift;

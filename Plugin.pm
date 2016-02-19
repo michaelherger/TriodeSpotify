@@ -9,20 +9,21 @@ package Plugins::SpotifyProtocolHandler::Plugin;
 
 use strict;
 
-use Digest::MD5 qw(md5_hex);
-use Digest::SHA1;
-use File::Basename qw(basename);
+use Digest::SHA1 qw(sha1_hex);
 use File::Next;
-use File::Spec::Functions;
+use File::Spec::Functions qw(catdir catfile abs2rel);
 
 use Slim::Networking::SimpleAsyncHTTP;
 use Slim::Utils::Log;
+use Slim::Utils::Prefs;
 
 my $log = Slim::Utils::Log->addLogCategory({
 	'category'     => 'plugin.spotifyprotocolhandler',
 	'defaultLevel' => 'WARN',
 	'description'  => 'PLUGIN_SPOTIFY_PROTOCOLHANDLER',
-}); 
+});
+
+my $binFolder;
 
 # we only initialize once all plugins are loaded. And then we only continue if Triode's plugin is not installed.
 sub postinitPlugin {
@@ -35,16 +36,22 @@ sub postinitPlugin {
 		if ( !$INC{'Slim/Plugin/SpotifyLogi/Plugin.pm'} ) {
 			$log->error("The official Logitech Squeezebox Spotify plugin should be enabled, or some functionality might be limited.");
 		}
+
+		require Plugins::SpotifyProtocolHandler::Spotifyd;
 	
 		if ( main::WEBUI ) {
 			require Plugins::SpotifyProtocolHandler::Settings;
 			Plugins::SpotifyProtocolHandler::Settings->new;
 		}
-	
+
+		# we store our binaries in the cache folder, as the Bin folder would be removed during updates
+		$binFolder ||= catdir( preferences('server')->get('cachedir'), 'spotifyd' );
+		mkdir $binFolder if !-d $binFolder;
+		
 		# defer starting helper app until after pref based info is loaded to avoid saving empty prefs if interrupted
 		# first we'll check whether we got all those files and whether they've been updated
 		if ( $class->validateHelperFiles() ) {
-			$class->initSpotifyD();
+			Plugins::SpotifyProtocolHandler::Spotifyd->init($binFolder);
 		}
 		else {
 			$log->error("spotifyd helper files are outdated or missing - updating...");
@@ -55,46 +62,6 @@ sub postinitPlugin {
 
 		require Plugins::SpotifyProtocolHandler::ProtocolHandler;
 	}
-}
-
-sub initSpotifyD {
-	my $class = shift;
-
-	require Plugins::SpotifyProtocolHandler::Spotifyd;
-
-	my $arch = Slim::Utils::OSDetect->details->{'binArch'};
-	my $binDir = catdir($class->_pluginDataFor('basedir'), 'Bin');
-
-	# hack for Synology archnames meaning binary dirs don't get put on findBin path
-	if ($arch =~ /^MARVELL/) {
-		Slim::Utils::Misc::addFindBinPaths(catdir( $binDir, 'arm-linux' ));
-	}
-	elsif ($arch =~ /X86|CEDARVIEW|EVANSPORT/) {
-		Slim::Utils::Misc::addFindBinPaths(catdir( $binDir, 'i386-linux' ));
-	}
-	# freebsd - try adding i386-linux which may work if linux compatibility is installed
-	elsif ($^O =~ /freebsd/ && $arch =~ /i386|amd64/) {
-		Slim::Utils::Misc::addFindBinPaths(catdir( $binDir, 'i386-linux' ));
-	}
-	# we need to add the find path for all architectures, as they were not available when the plugin was loaded
-	else {
-		my @paths = ( catdir($binDir, $arch), $binDir );
-
-		if ( $arch =~ /i386-linux/i ) {
- 			my $arch = $Config::Config{'archname'};
- 			
-			if ( $arch && $arch =~ s/^x86_64-([^-]+).*/x86_64-$1/ ) {
-				unshift @paths, catdir($binDir, $arch);
-			}
-		}
-		elsif ( $arch && $arch eq 'armhf-linux' ) {
-			push @paths, catdir($binDir, 'arm-linux');
-		}
-
-		Slim::Utils::Misc::addFindBinPaths( @paths );
-	}
-
-	Plugins::SpotifyProtocolHandler::Spotifyd->startD;
 }
 
 sub shutdownPlugin {
@@ -108,8 +75,6 @@ sub validateHelperFiles {
 
 	main::DEBUGLOG && $log->is_debug && $log->debug('Validate spotifyd helper files');
 
-	my $binFolder = catdir( $class->_pluginDataFor('basedir'), 'Bin' );
-
 	# verify whether we have all the binaries in place 
 	my %hashes = map { $_ => 1 } @{$class->_pluginDataFor('hashes') || []};
 	my $files  = File::Next::files( $binFolder );
@@ -119,13 +84,15 @@ sub validateHelperFiles {
 		my $size = $stat[7];
 		my $mtime = $stat[9];
 		
-		$file =~ s/^\Q$binFolder\E\///;
+		# normalize file paths
+		$file = abs2rel($file, $binFolder);
+		$file =~ s/\\/\//g;
 		
-		my $hash = md5_hex("$file, $size, $mtime");
+		my $hash = sha1_hex("$file, $size");
 		
 		delete $hashes{$hash};
 		
-#		main::DEBUGLOG && $log->is_debug && $log->debug("$hash: $file");
+		main::DEBUGLOG && $log->is_debug && $log->debug("$hash: $file");
 	}
 	
 	# if we didn't find all file hashes, then return false
@@ -136,7 +103,6 @@ sub getHelperFiles {
 	my ($class) = @_;
 	
 	my $spotifydVersion = $class->_pluginDataFor('spotifydversion') || return;
-	my $binFolder = catdir( $class->_pluginDataFor('basedir'), 'Bin' );
 	
 	my $file = "SpotifyD-$spotifydVersion.zip";
 	my $url = 'http://www.herger.net/_data/' . $file;
@@ -184,8 +150,10 @@ sub getHelperFiles {
 							}
 						}
 						
+						unlink $file;
+						
 						# finally start up SpotifyD
-						$class->initSpotifyD();
+						Plugins::SpotifyProtocolHandler::Spotifyd->init($binFolder);
 					}
 				}
 			}
