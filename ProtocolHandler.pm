@@ -124,19 +124,7 @@ sub canDirectStream {
 	# ensure a duration is stored in the song object to enable StreamingController to know when a track has completed
 	# as long as the LRU size is large enough we should never get here, but protect against having no duration
 	# as StreamingControler uses this as a trigger to repeat the current track at end rather than move on to the next
-	if (!$song->duration) {
-
-		$log->info("no duration for url: $url - setting temporary duration");
-
-		$song->duration(-1);
-
-		$class->getMetadataFor($client, $url, undef, $song);
-
-	} else {
-
-		# trigger metadata fetch if it is not in remoteTrack cache
-		$class->getMetadataFor($client, $url);
-	}
+	$class->getMetadataFor($client, $url, undef, $song);
 
 	my $host = Slim::Utils::Network::serverAddr();
 	my $port = $prefs->get('httpport');
