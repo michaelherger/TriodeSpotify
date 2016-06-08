@@ -12,6 +12,9 @@ use strict;
 use File::Spec::Functions;
 
 use Slim::Utils::Log;
+use Slim::Utils::Prefs;
+
+my $prefs = preferences('plugin.spotify');
 
 my $log = Slim::Utils::Log->addLogCategory({
 	'category'     => 'plugin.spotifyprotocolhandler',
@@ -30,6 +33,9 @@ sub postinitPlugin {
 
 		require Plugins::SpotifyProtocolHandler::Settings;
 		require Plugins::SpotifyProtocolHandler::Spotifyd;
+		require Plugins::SpotifyProtocolHandler::Mixer;
+		
+		Plugins::SpotifyProtocolHandler::Mixer->init();
 
 		if ( !$INC{'Slim/Plugin/SpotifyLogi/Plugin.pm'} ) {
 			$log->error("The official Logitech Squeezebox Spotify plugin should be enabled, or some functionality might be limited.");
