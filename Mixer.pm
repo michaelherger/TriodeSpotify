@@ -12,20 +12,9 @@ my $prefs = preferences('plugin.spotify');
 my $serverprefs = preferences('server');
 my $log = logger('plugin.spotifyprotocolhandler');
 
-# playlist commands that will stop a "radio"
-my %stopcommands = (
-	'clear'	     => 1,
-	'loadtracks' => 1, # multiple play
-	'playtracks' => 1, # single play
-	'load'       => 1, # old style url load (no play)
-	'play'       => 1, # old style url play
-	'loadalbum'  => 1, # old style multi-item load
-	'playalbum'  => 1, # old style multi-item play
-);
-
 sub init {
 	# listen to playlist change events so we know when our own playlist ends
-	Slim::Control::Request::subscribe(\&onPlaylistChange, [['playlist'], ['cant_open', 'newsong', 'delete', keys %stopcommands, 'resume']]);
+	Slim::Control::Request::subscribe(\&onPlaylistChange, [['playlist'], ['cant_open', 'newsong', 'delete', 'resume']]);
 }
 
 sub onPlaylistChange {
@@ -35,7 +24,7 @@ sub onPlaylistChange {
 	return if !defined $client;
 	$client = $client->master;
 	return if $request->source && $request->source eq __PACKAGE__;
-#	return if !$prefs->client($client)->get('neverStopTheMusic');
+	return if !$prefs->client($client)->get('neverStopTheMusic');
 
 	Slim::Utils::Timers::killTimers($client, \&neverStopTheMusic);
 
