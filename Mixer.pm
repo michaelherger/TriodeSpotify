@@ -49,7 +49,6 @@ sub onPlaylistChange {
 	
 	if ( main::INFOLOG && $log->is_info ) {
 		$log->info(sprintf("Received command %s", $request->getRequestString));
-		$log->info(sprintf("While in mode: %s, from %s", ($prefs->client($client)->get('session_id') || 'new!'), $client->name));
 	}
 
 	if ( $request->isCommand( [['playlist'], ['newsong', 'delete', 'cant_open']] ) ) {
@@ -95,15 +94,15 @@ sub neverStopTheMusic {
 			};
 		}
 
-		# pick five random tracks from the playlist
-		if (scalar @$tracks > 5) {
-			Slim::Player::Playlist::fischer_yates_shuffle($tracks);
-			splice(@$tracks, 5);
-		}
-		
 		# don't seed from radio stations - only do if we're playing from some track based source
-		if ($tracks && @$tracks && $duration) {
+		if ($tracks && ref $tracks && scalar @$tracks && $duration) {
 			main::INFOLOG && $log->info("Auto-mixing from random tracks in current playlist");
+
+			# pick five random tracks from the playlist
+			if (scalar @$tracks > 5) {
+				Slim::Player::Playlist::fischer_yates_shuffle($tracks);
+				splice(@$tracks, 5);
+			}
 			
 			my $http = Slim::Networking::SqueezeNetwork->new(
 				sub {
@@ -155,7 +154,12 @@ sub neverStopTheMusic {
 			$http->post( $http->url( '/api/spotify/v1/opml/autoDJ' ), $json );
 		}
 		elsif (main::INFOLOG && $log->is_info) {
-			$log->info("No mixable items found in current playlist!");
+			if (!$duration) {
+				$log->info("Found radio station last in the queue - don't start a mix.");
+			}
+			else {
+				$log->info("No mixable items found in current playlist!");
+			}
 		}
 	}
 }
