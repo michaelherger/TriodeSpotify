@@ -12,9 +12,6 @@ use strict;
 use File::Spec::Functions;
 
 use Slim::Utils::Log;
-use Slim::Utils::Prefs;
-
-my $prefs = preferences('plugin.spotify');
 
 my $log = Slim::Utils::Log->addLogCategory({
 	'category'     => 'plugin.spotifyprotocolhandler',
@@ -33,9 +30,6 @@ sub postinitPlugin {
 
 		require Plugins::SpotifyProtocolHandler::Settings;
 		require Plugins::SpotifyProtocolHandler::Spotifyd;
-		require Plugins::SpotifyProtocolHandler::Mixer;
-		
-		Plugins::SpotifyProtocolHandler::Mixer->init();
 
 		if ( !$INC{'Slim/Plugin/SpotifyLogi/Plugin.pm'} ) {
 			$log->error("The official Logitech Squeezebox Spotify plugin should be enabled, or some functionality might be limited.");
@@ -65,25 +59,6 @@ sub postinitPlugin {
 		Slim::Web::Pages->addPageFunction("^spotifyd.log", \&Plugins::SpotifyProtocolHandler::Spotifyd::logHandler);
 
 		require Plugins::SpotifyProtocolHandler::ProtocolHandler;
-
-		# register a settings item. I don't like that, but we can't hook in to the mysb.com delivered menu.
-		Slim::Control::Request::addDispatch(['spotifydontstopthemusicsetting'],[1, 0, 1, \&dontStopTheMusicSetting]);
-		
-		Slim::Control::Jive::registerPluginMenu([{
-			text    => 'PLUGIN_SPOTIFY_PROTOCOLHANDLER',
-			id      => 'settingsSpotifyAudoDJ',
-			node    => 'settings',
-			window  => { 
-				'icon-id' => Slim::Web::ImageProxy::proxiedImage(Slim::Plugin::SpotifyLogi::Plugin->_pluginDataFor('icon')),
-			},
-			weight  => 1,
-			actions => {
-				go => {
-					cmd => ['spotifydontstopthemusicsetting'],
-					player => 0
-				},
-			},
-		}]);
 	}
 }
 
@@ -91,31 +66,6 @@ sub shutdownPlugin {
 	if ($INC{'Plugins/SpotifyProtocolHandler/Spotifyd.pm'}) {
 		Plugins::SpotifyProtocolHandler::Spotifyd->shutdownD;
 	}
-}
-
-sub dontStopTheMusicSetting {
-	my $request = shift;
-	my $client  = $request->client();
-
-	$request->addResult('offset', 0);
-	$request->addResult('count', 1);
-
-	$request->setResultLoopHash('item_loop', 0, {
-		text => $client->string('PLUGIN_SPOTIFY_DONT_STOP_THE_MUSIC'),
-		checkbox => $prefs->client($client)->get('neverStopTheMusic') ? 1 : 0,
-		actions => {
-			on => {
-				player => 0,
-				cmd => [ 'playerpref', 'plugin.spotify:neverStopTheMusic', 1 ]
-			},
-			off => {
-				player => 0,
-				cmd => [ 'playerpref', 'plugin.spotify:neverStopTheMusic', 0 ]
-			},
-		},
-	});
-	
-	$request->setStatusDone()
 }
 
 *_pluginDataFor = \&Slim::Plugin::Base::_pluginDataFor;

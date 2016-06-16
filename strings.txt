@@ -220,7 +220,3 @@ PLUGIN_SPOTIFY_HELPERNAME
 PLUGIN_SPOTIFY_HELPERNAME_DESC
 	DE	Stelle sicher, dass deine Firewall Verbindungen auf den Port der Helfer-Anwendung zulässt.
 	EN	Ensure your firewall allows incomming connections to this application on the Helper App Port
-
-PLUGIN_SPOTIFY_DONT_STOP_THE_MUSIC
-	DE	Musikwiedergabe nie stoppen
-	EN	Don't stop the music!
